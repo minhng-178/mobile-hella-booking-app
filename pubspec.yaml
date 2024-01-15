@@ -38,6 +38,8 @@ dependencies:
   flutter_svg: ^2.0.9
   salomon_bottom_bar: ^3.3.2
   font_awesome_flutter: ^10.6.0
+  syncfusion_flutter_datepicker: ^24.1.45
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

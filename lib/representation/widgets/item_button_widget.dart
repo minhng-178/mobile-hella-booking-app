@@ -3,11 +3,12 @@ import 'package:travo_app/core/constants/color_palatte.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
 
-class ButtonWidget extends StatelessWidget {
-  const ButtonWidget({Key? key, required this.title, this.onTap})
-      : super(key: key);
-  final String title;
+class ItemButtonWidget extends StatelessWidget {
+  const ItemButtonWidget(
+      {super.key, required this.data, this.onTap, this.color});
+  final String data;
   final Function()? onTap;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class ButtonWidget extends StatelessWidget {
             gradient: Gradients.defaultGradientBackground),
         alignment: Alignment.center,
         child: Text(
-          title,
+          data,
           style: TextStyles.defaultStyle.bold.whiteTextColor,
         ),
       ),

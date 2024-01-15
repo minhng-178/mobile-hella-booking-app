@@ -13,13 +13,17 @@ class AppBArContainerWidget extends StatelessWidget {
       this.title,
       this.titleString,
       this.implementTraling = false,
-      this.implementLeading = false});
+      this.implementLeading = false,
+      this.paddingContent = const EdgeInsets.symmetric(
+        horizontal: kMediumPadding,
+      )});
 
   final Widget child;
   final Widget? title;
   final String? titleString;
   final bool? implementLeading;
   final bool? implementTraling;
+  final EdgeInsets? paddingContent;
 
   @override
   Widget build(BuildContext context) {
