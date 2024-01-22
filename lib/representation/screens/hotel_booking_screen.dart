@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/extensions/date_ext.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
+import 'package:travo_app/representation/screens/guest_and_room_screen.dart';
 import 'package:travo_app/representation/screens/select_date_screen.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_options_booking.dart.dart';
@@ -17,6 +18,7 @@ class HotelBookingScreen extends StatefulWidget {
 
 class _HotelBookingScreenState extends State<HotelBookingScreen> {
   String? selectDate;
+  String? guestAndRoom;
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +54,17 @@ class _HotelBookingScreenState extends State<HotelBookingScreen> {
           ),
           ItemOptionsBookingWidget(
             title: 'Guest and Room',
-            value: '2 Guest, 1 Room',
+            value: guestAndRoom ?? 'Guest and Room',
             icon: AssetHelper.icoBed,
-            onTap: () {},
+            onTap: () async {
+              final result = await Navigator.of(context)
+                  .pushNamed(GuestAndRoomScreen.routeName);
+              if (result is List<int>) {
+                setState(() {
+                  guestAndRoom = '${result[0]} Guest, ${result[1]} Room';
+                });
+              }
+            },
           ),
         ],
       ),

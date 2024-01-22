@@ -14,32 +14,119 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-Widget _buildItemCategory(
-    Widget icon, Color color, Function() onTap, String title) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Column(
-      children: [
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(
-            vertical: kMediumPadding,
-          ),
-          decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(kItemPadding)),
-          child: icon,
-        ),
-        SizedBox(
-          height: kItemPadding,
-        ),
-        Text(title)
-      ],
-    ),
-  );
-}
-
 class _HomeScreenState extends State<HomeScreen> {
+  final List<Map<String, String>> listImageLeft = [
+    {
+      'name': 'Korea',
+      'image': AssetHelper.korea,
+    },
+    {
+      'name': 'Dubai',
+      'image': AssetHelper.dubai,
+    },
+  ];
+  final List<Map<String, String>> listImageRight = [
+    {
+      'name': 'Turkey',
+      'image': AssetHelper.turkey,
+    },
+    {
+      'name': 'Japan',
+      'image': AssetHelper.japan,
+    },
+  ];
+
+  Widget _buildItemCategory(
+      Widget icon, Color color, Function() onTap, String title) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(
+              vertical: kMediumPadding,
+            ),
+            decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(kItemPadding)),
+            child: icon,
+          ),
+          SizedBox(
+            height: kItemPadding,
+          ),
+          Text(title)
+        ],
+      ),
+    );
+  }
+
+  Widget _buidlImageHomeScreen(String name, String image) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context)
+            .pushNamed(HotelBookingScreen.routeName, arguments: name);
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: kDefaultPadding),
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            ImageHelper.loadFromAsset(
+              image,
+              width: double.infinity,
+              fit: BoxFit.fitWidth,
+              radius: BorderRadius.circular(kItemPadding),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(kDefaultPadding),
+              child: Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ),
+            ),
+            Positioned(
+              left: kDefaultPadding,
+              bottom: kDefaultPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyles.defaultStyle.whiteTextColor.bold,
+                  ),
+                  SizedBox(
+                    height: kItemPadding,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(kMinPadding),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(kMinPadding),
+                      color: Colors.white.withOpacity(0.4),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.star,
+                          color: Color(0xffFFC107),
+                        ),
+                        SizedBox(
+                          width: kItemPadding,
+                        ),
+                        Text('4.5')
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBArContainerWidget(
@@ -51,7 +138,6 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Hi James!',
                     style:
@@ -78,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 40,
               width: 40,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kMinPadding),
+                  borderRadius: BorderRadius.circular(kItemPadding),
                   color: Colors.white),
               padding: EdgeInsets.all(kMinPadding),
               child: ImageHelper.loadFromAsset(AssetHelper.person),
@@ -86,10 +172,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      implementLeading: true,
+      implementLeading: false,
       child: Column(
         children: [
           TextField(
+            enabled: true,
+            autocorrect: false,
             decoration: InputDecoration(
                 hintText: 'Search your destination',
                 prefixIcon: Padding(
@@ -109,6 +197,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: kItemPadding)),
+            style: TextStyles.defaultStyle,
+            onChanged: (value) {},
+            onSubmitted: (String submitValue) {},
           ),
           SizedBox(
             height: kDefaultPadding,
@@ -141,11 +232,54 @@ class _HomeScreenState extends State<HomeScreen> {
                     () {},
                     'All'),
               ),
-              SizedBox(
-                height: kMediumPadding,
+            ],
+          ),
+          SizedBox(
+            height: kMediumPadding,
+          ),
+          Row(
+            children: [
+              Text(
+                'Popular Destinations',
+                style: TextStyles.defaultStyle.bold,
+              ),
+              Spacer(),
+              Text(
+                'See All',
+                style: TextStyles.defaultStyle.bold.primaryTextColor,
               ),
             ],
-          )
+          ),
+          SizedBox(
+            height: kMediumPadding,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: listImageLeft
+                          .map((e) =>
+                              _buidlImageHomeScreen(e['name']!, e['image']!))
+                          .toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    width: kDefaultPadding,
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: listImageRight
+                          .map((e) =>
+                              _buidlImageHomeScreen(e['name']!, e['image']!))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

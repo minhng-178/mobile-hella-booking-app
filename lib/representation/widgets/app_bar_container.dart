@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:travo_app/core/constants/color_palatte.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
@@ -12,17 +13,21 @@ class AppBArContainerWidget extends StatelessWidget {
       required this.child,
       this.title,
       this.titleString,
+      this.subTitleString,
       this.implementTraling = false,
-      this.implementLeading = false,
+      this.implementLeading = true,
       this.paddingContent = const EdgeInsets.symmetric(
         horizontal: kMediumPadding,
-      )});
+      )})
+      : assert(title != null || titleString != null,
+            'title or titleString can\'t be null');
 
   final Widget child;
   final Widget? title;
   final String? titleString;
-  final bool? implementLeading;
-  final bool? implementTraling;
+  final String? subTitleString;
+  final bool implementTraling;
+  final bool implementLeading;
   final EdgeInsets? paddingContent;
 
   @override
@@ -32,68 +37,80 @@ class AppBArContainerWidget extends StatelessWidget {
         children: [
           SizedBox(
             height: 186,
-            child: (AppBar(
-              centerTitle: true,
-              automaticallyImplyLeading: false,
-              elevation: 0,
-              toolbarHeight: 90,
-              backgroundColor: ColorPalette.backgroundScaffoldColor,
+            child: AppBar(
               title: title ??
-                  Row(
-                    children: [
-                      if (implementLeading != null)
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              kDefaultPadding,
-                            ),
-                            color: Colors.white,
-                          ),
-                          padding: EdgeInsets.all(kItemPadding),
-                          child: Icon(
-                            FontAwesomeIcons.arrowLeft,
-                            size: kDefaultPadding,
-                            color: Colors.black,
-                          ),
-                        ),
-                      Expanded(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                titleString ?? '',
-                                style: TextStyles.defaultStyle.fontHeader
-                                    .whiteTextColor.bold,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (implementLeading)
+                          (GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(kDefaultPadding),
+                                  color: Colors.white),
+                              padding: EdgeInsets.all(kItemPadding),
+                              child: Icon(
+                                FontAwesomeIcons.arrowLeft,
+                                size: kDefaultPadding,
+                                color: Colors.black,
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (implementTraling != null)
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              kDefaultPadding,
                             ),
-                            color: Colors.white,
-                          ),
-                          padding: EdgeInsets.all(kItemPadding),
-                          child: Icon(
-                            FontAwesomeIcons.bars,
-                            size: kDefaultPadding,
-                            color: Colors.black,
+                          )),
+                        Expanded(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  titleString ?? '',
+                                  style: TextStyles.defaultStyle.fontHeader
+                                      .whiteTextColor.bold,
+                                ),
+                                if (subTitleString != null)
+                                  (Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: kMediumPadding),
+                                    child: Text(
+                                      subTitleString!,
+                                      style: TextStyles.defaultStyle.fontCaption
+                                          .whiteTextColor,
+                                    ),
+                                  ))
+                              ],
+                            ),
                           ),
                         ),
-                    ],
+                        if (implementTraling)
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(kDefaultPadding),
+                                color: Colors.white),
+                            padding: EdgeInsets.all(kItemPadding),
+                            child: Icon(
+                              FontAwesomeIcons.bars,
+                              size: kDefaultPadding,
+                              color: Colors.black,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
               flexibleSpace: Stack(
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        gradient: Gradients.defaultGradientBackground,
-                        borderRadius:
-                            BorderRadius.only(bottomLeft: Radius.circular(35))),
+                      gradient: Gradients.defaultGradientBackground,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(35),
+                      ),
+                    ),
                   ),
                   Positioned(
                     top: 0,
@@ -111,11 +128,16 @@ class AppBArContainerWidget extends StatelessWidget {
                   ),
                 ],
               ),
-            )),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              elevation: 0,
+              toolbarHeight: 90,
+              backgroundColor: ColorPalette.backgroundScaffoldColor,
+            ),
           ),
           Container(
             margin: EdgeInsets.only(top: 156),
-            padding: EdgeInsets.symmetric(horizontal: kMediumPadding),
+            padding: paddingContent,
             child: child,
           )
         ],
