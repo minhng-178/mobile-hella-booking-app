@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travo_app/core/constants/color_palatte.dart';
+import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';

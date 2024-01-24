@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travo_app/core/constants/color_palatte.dart';
+import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
 

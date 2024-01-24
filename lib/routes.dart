@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:travo_app/representation/screens/guest_and_room_screen.dart';
 import 'package:travo_app/representation/screens/hotel_booking_screen.dart';
 import 'package:travo_app/representation/screens/intro_screen.dart';
+import 'package:travo_app/representation/screens/login_screen.dart';
 import 'package:travo_app/representation/screens/main_app.dart';
+import 'package:travo_app/representation/screens/register_screen.dart';
 import 'package:travo_app/representation/screens/select_date_screen.dart';
 import 'package:travo_app/representation/screens/splash_screen.dart.dart';
 
@@ -12,5 +14,7 @@ final Map<String, WidgetBuilder> routes = {
   MainApp.routeName: (context) => const MainApp(),
   HotelBookingScreen.routeName: (context) => const HotelBookingScreen(),
   GuestAndRoomScreen.routeName: (context) => const GuestAndRoomScreen(),
+  LoginScreen.routeName: (context) => const LoginScreen(),
+  RegisterScreen.routeName: (context) => const RegisterScreen(),
   SelectDateScreen.routeName: (context) => SelectDateScreen(),
 };

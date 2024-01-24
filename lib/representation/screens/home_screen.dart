@@ -4,6 +4,7 @@ import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
+import 'package:travo_app/representation/screens/login_screen.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/screens/hotel_booking_screen.dart';
 
@@ -130,49 +131,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AppBArContainerWidget(
-      titleString: 'home',
-      title: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kItemPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Hi James!',
-                    style:
-                        TextStyles.defaultStyle.fontHeader.whiteTextColor.bold),
-                SizedBox(
-                  height: kMediumPadding,
-                ),
-                Text(
-                  'Where are you going next?',
-                  style: TextStyles.defaultStyle.fontCaption.whiteTextColor,
-                )
-              ],
-            ),
-            Spacer(),
-            Icon(
-              FontAwesomeIcons.bell,
-              size: kDefaultIconSize,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: kTopPadding,
-            ),
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(kItemPadding),
-                  color: Colors.white),
-              padding: EdgeInsets.all(kMinPadding),
-              child: ImageHelper.loadFromAsset(AssetHelper.person),
-            )
-          ],
-        ),
-      ),
+      titleString: 'Home',
       implementLeading: false,
+      implementTraling: true,
       child: Column(
         children: [
           TextField(
@@ -248,6 +209,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 'See All',
                 style: TextStyles.defaultStyle.bold.primaryTextColor,
               ),
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                      LoginScreen.routeName); // Navigate to the login screen
+                },
+                child: Text(
+                  'Login',
+                  style: TextStyles.defaultStyle.bold.primaryTextColor,
+                ),
+              )
             ],
           ),
           SizedBox(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:travo_app/representation/screens/error_screen.dart';
 import 'package:travo_app/routes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:travo_app/core/constants/color_palatte.dart';
+import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/helpers/local_storage_helper.dart';
 import 'package:travo_app/representation/screens/splash_screen.dart.dart';
 
@@ -18,13 +19,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Travo',
+      title: 'Hella',
       theme: ThemeData(
-          primaryColor: ColorPalette.primaryColor,
-          scaffoldBackgroundColor: ColorPalette.backgroundScaffoldColor,
-          colorScheme: const ColorScheme.light(
-              background: ColorPalette.backgroundScaffoldColor)),
+        primaryColor: ColorPalette.primaryColor,
+        scaffoldBackgroundColor: ColorPalette.backgroundScaffoldColor,
+        colorScheme: const ColorScheme.light(
+            background: ColorPalette.backgroundScaffoldColor),
+      ),
       routes: routes,
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (context) => ErrorScreen());
+      },
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );

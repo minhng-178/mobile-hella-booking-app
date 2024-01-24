@@ -24,6 +24,7 @@ class _HotelBookingScreenState extends State<HotelBookingScreen> {
   Widget build(BuildContext context) {
     return AppBArContainerWidget(
       titleString: 'Hotel Booking',
+      implementTraling: true,
       child: Column(
         children: [
           SizedBox(

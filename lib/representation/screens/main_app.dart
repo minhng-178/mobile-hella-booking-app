@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:travo_app/core/constants/color_palatte.dart';
+import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/representation/screens/home_screen.dart';
 
