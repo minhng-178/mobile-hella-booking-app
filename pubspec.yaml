@@ -41,6 +41,9 @@ dependencies:
   syncfusion_flutter_datepicker: ^24.1.45
   intl: ^0.19.0
   fluttertoast: ^8.2.4
+  http: ^1.2.0
+  flutter_local_notifications: ^16.3.2
+  flutter_datetime_picker: ^1.5.1
 
 dev_dependencies:
   flutter_test:

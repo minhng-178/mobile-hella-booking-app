@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:http/http.dart' as http;
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/representation/screens/register_screen.dart';
+import 'package:travo_app/representation/services/notifi_service.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
 import 'package:travo_app/representation/widgets/item_square_title_widget.dart';
@@ -17,18 +21,47 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   // text editing controllers
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
   // sign user in method
-  void signUserIn() {
+  void signUserIn() async {
     if (_formKey.currentState!.validate()) {
       // If the form is valid, display a Snackbar.
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Processing Data')),
       );
+
+      // Prepare data to send
+      Map<String, String> headers = {"Content-type": "application/json"};
+      Uri url = Uri.parse("https://hella-booking.onrender.com/api/v1/signIn");
+      var body = json.encode({
+        'email': emailController.text,
+        'password': passwordController.text,
+      });
+
+      // Send the request
+      var response = await http.post(url, headers: headers, body: body);
+
+      // Print the response
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      // Do something with the response
+      if (response.statusCode == 201) {
+        log('User logged in successfully');
+        NotificationService().showNotification(
+            title: 'Login Success!', body: 'Glad to see you again!');
+      } else {
+        var errorResponse = json.decode(response.body);
+        log('Server error: ${errorResponse['message']}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Failed to log in user: ${errorResponse['message']}')),
+        );
+      }
     }
   }
 
@@ -36,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return AppBArContainerWidget(
       titleString: 'Login',
+      isLoggedIn: true,
       child: Form(
         key: _formKey,
         child: Center(
@@ -54,11 +88,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 25),
 
                 ItemTextField(
-                    controller: usernameController,
-                    hintText: 'Username',
+                    controller: emailController,
+                    hintText: 'Email',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your username';
+                        return 'Please enter your email';
+                      } else if (!value.contains('@')) {
+                        return 'Please enter a valid email';
                       }
                       return null;
                     },

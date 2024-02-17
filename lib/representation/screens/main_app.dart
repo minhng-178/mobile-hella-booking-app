@@ -4,6 +4,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/representation/screens/home_screen.dart';
+import 'package:travo_app/representation/screens/profile_screen.dart';
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -31,9 +32,7 @@ class _MainAppState extends State<MainApp> {
           Container(
             color: Colors.red,
           ),
-          Container(
-            color: Colors.green,
-          ),
+          ProfileScreen()
         ],
       ),
       bottomNavigationBar: SalomonBottomBar(

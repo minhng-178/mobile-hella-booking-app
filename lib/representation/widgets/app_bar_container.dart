@@ -5,6 +5,7 @@ import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
+import 'package:travo_app/representation/screens/login_screen.dart';
 import 'package:travo_app/representation/widgets/item_drawer_widget.dart';
 
 class AppBArContainerWidget extends StatelessWidget {
@@ -16,6 +17,7 @@ class AppBArContainerWidget extends StatelessWidget {
       this.subTitleString,
       this.implementTraling = false,
       this.implementLeading = true,
+      this.isLoggedIn = false,
       this.paddingContent = const EdgeInsets.symmetric(
         horizontal: kMediumPadding,
       )})
@@ -29,6 +31,7 @@ class AppBArContainerWidget extends StatelessWidget {
   final bool implementTraling;
   final bool implementLeading;
   final EdgeInsets? paddingContent;
+  final bool isLoggedIn;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +93,7 @@ class AppBArContainerWidget extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            if (implementTraling)
+                            if (implementTraling && isLoggedIn)
                               GestureDetector(
                                 onTap: () {
                                   Scaffold.of(context).openEndDrawer();
@@ -107,7 +110,19 @@ class AppBArContainerWidget extends StatelessWidget {
                                     color: Colors.black,
                                   ),
                                 ),
-                              ),
+                              )
+                            else if (!isLoggedIn)
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(LoginScreen
+                                      .routeName); // Navigate to the login screen
+                                },
+                                child: Text(
+                                  'Login',
+                                  style: TextStyles
+                                      .defaultStyle.bold.whiteTextColor,
+                                ),
+                              )
                           ],
                         ),
                       ),

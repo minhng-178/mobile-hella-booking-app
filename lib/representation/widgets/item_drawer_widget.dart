@@ -61,7 +61,7 @@ class ItemDrawer extends StatelessWidget {
               // Perform logout operation
               // ...
             },
-          ),
+          )
         ],
       ),
     );

@@ -3,19 +3,25 @@ import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
 
-class ItemChangeGuestAndRoom extends StatefulWidget {
-  const ItemChangeGuestAndRoom(
-      {super.key, this.initData = 0, required this.icon, required this.value});
+class ItemChangeTourist extends StatefulWidget {
+  const ItemChangeTourist({
+    super.key,
+    this.initData = 0,
+    required this.icon,
+    required this.value,
+    required this.onNumberChanged,
+  });
 
   final int initData;
   final String icon;
   final String value;
+  final Function(int) onNumberChanged;
 
   @override
-  State<ItemChangeGuestAndRoom> createState() => _ItemChangeGuestAndRoomState();
+  State<ItemChangeTourist> createState() => _ItemChangeTouristState();
 }
 
-class _ItemChangeGuestAndRoomState extends State<ItemChangeGuestAndRoom> {
+class _ItemChangeTouristState extends State<ItemChangeTourist> {
   late final TextEditingController _textEditingController;
 
   final FocusNode _focusNode = FocusNode();
@@ -62,6 +68,7 @@ class _ItemChangeGuestAndRoomState extends State<ItemChangeGuestAndRoom> {
                   }
                 });
               }
+              widget.onNumberChanged(number);
             },
             child: ImageHelper.loadFromAsset(
               AssetHelper.icoDecre,
@@ -101,6 +108,7 @@ class _ItemChangeGuestAndRoomState extends State<ItemChangeGuestAndRoom> {
                 if (_focusNode.hasFocus) {
                   _focusNode.unfocus();
                 }
+                widget.onNumberChanged(number);
               });
             },
             child: ImageHelper.loadFromAsset(AssetHelper.icoIncre),
