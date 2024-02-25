@@ -11,7 +11,6 @@ class ProfileScreen extends StatelessWidget {
     return AppBArContainerWidget(
         titleString: 'Profile',
         implementLeading: false,
-        isLoggedIn: true,
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(0.0),

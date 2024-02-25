@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
+import 'package:travo_app/providers/auth_provider.dart';
 import 'package:travo_app/representation/screens/login_screen.dart';
+import 'package:travo_app/representation/screens/register_screen.dart';
 import 'package:travo_app/representation/widgets/item_drawer_widget.dart';
 
 class AppBArContainerWidget extends StatelessWidget {
@@ -17,12 +21,11 @@ class AppBArContainerWidget extends StatelessWidget {
       this.subTitleString,
       this.implementTraling = false,
       this.implementLeading = true,
-      this.isLoggedIn = false,
       this.paddingContent = const EdgeInsets.symmetric(
         horizontal: kMediumPadding,
       )})
       : assert(title != null || titleString != null,
-            'title or titleString can\'t be null');
+            'title or title String can\'t be null');
 
   final Widget child;
   final Widget? title;
@@ -31,10 +34,17 @@ class AppBArContainerWidget extends StatelessWidget {
   final bool implementTraling;
   final bool implementLeading;
   final EdgeInsets? paddingContent;
-  final bool isLoggedIn;
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<AuthProvider>(context);
+    final isLoggedIn = userProvider.isLoggedIn;
+    final isLoginPage =
+        ModalRoute.of(context)?.settings.name == LoginScreen.routeName;
+
+    final isRegisterPage =
+        ModalRoute.of(context)?.settings.name == RegisterScreen.routeName;
+
     return Scaffold(
       endDrawer: ItemDrawer(),
       body: Builder(builder: (context) {
@@ -111,7 +121,9 @@ class AppBArContainerWidget extends StatelessWidget {
                                   ),
                                 ),
                               )
-                            else if (!isLoggedIn)
+                            else if (!isLoggedIn &&
+                                !isLoginPage &&
+                                !isRegisterPage)
                               GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(LoginScreen

@@ -8,12 +8,14 @@ class ItemOptionsBookingWidget extends StatelessWidget {
       {super.key,
       required this.title,
       required this.value,
-      required this.icon,
+      this.icon,
+      this.iconFontAve,
       this.onTap});
 
   final String title;
   final String value;
-  final String icon;
+  final String? icon;
+  final IconData? iconFontAve;
   final Function()? onTap;
 
   @override
@@ -29,7 +31,7 @@ class ItemOptionsBookingWidget extends StatelessWidget {
         margin: EdgeInsets.only(bottom: kMediumPadding),
         child: Row(
           children: [
-            ImageHelper.loadFromAsset(icon),
+            ImageHelper.loadFromAsset(icon ?? ""),
             SizedBox(
               width: kDefaultPadding,
             ),

@@ -4,8 +4,8 @@ import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
+import 'package:travo_app/representation/screens/tour_booking_screen.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
-import 'package:travo_app/representation/screens/hotel_booking_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context)
-            .pushNamed(HotelBookingScreen.routeName, arguments: name);
+            .pushNamed(TourBookingScreen.routeName, arguments: name);
       },
       child: Container(
         margin: EdgeInsets.only(bottom: kDefaultPadding),
@@ -171,8 +171,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ImageHelper.loadFromAsset(AssetHelper.icoHotel,
                         width: kDefaultIconSize, height: kDefaultIconSize),
                     Color(0xffFE9C5E), () {
-                  Navigator.of(context).pushNamed(HotelBookingScreen.routeName);
-                }, 'Hotels'),
+                  Navigator.of(context).pushNamed(TourBookingScreen.routeName);
+                }, 'Tours'),
               ),
               SizedBox(width: kDefaultPadding),
               Expanded(

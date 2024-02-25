@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
+import 'package:travo_app/providers/auth_provider.dart';
+import 'package:travo_app/representation/screens/login_screen.dart';
 
 class ItemDrawer extends StatelessWidget {
   const ItemDrawer({super.key});
@@ -57,9 +60,13 @@ class ItemDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(FontAwesomeIcons.rightFromBracket),
             title: Text('Logout'),
-            onTap: () {
-              // Perform logout operation
-              // ...
+            onTap: () async {
+              final authProvider =
+                  Provider.of<AuthProvider>(context, listen: false);
+
+              final navigator = Navigator.of(context);
+              await authProvider.signOut();
+              navigator.pushReplacementNamed(LoginScreen.routeName);
             },
           )
         ],

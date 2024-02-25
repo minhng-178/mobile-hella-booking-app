@@ -4,49 +4,33 @@ import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
+import 'package:travo_app/models/tourguide_model.dart';
 import 'package:travo_app/representation/services/notifi_service.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
-import 'package:travo_app/representation/widgets/item_change_tourguide.dart';
+import 'package:travo_app/representation/widgets/item_change_guide.dart';
 import 'package:travo_app/representation/widgets/item_change_tourist.dart';
 import 'package:travo_app/representation/widgets/item_options_booking.dart.dart';
 
-class HotelBookingScreen extends StatefulWidget {
-  const HotelBookingScreen({super.key});
+class TourBookingScreen extends StatefulWidget {
+  const TourBookingScreen({super.key});
 
-  static const routeName = '/hotel_booking_screen';
+  static const routeName = '/tour_booking_screen';
 
   @override
-  State<HotelBookingScreen> createState() => _HotelBookingScreenState();
+  State<TourBookingScreen> createState() => _TourBookingScreenState();
 }
 
-class _HotelBookingScreenState extends State<HotelBookingScreen> {
+class _TourBookingScreenState extends State<TourBookingScreen> {
   String? selectDate;
   String? selectTime;
   String? guestAndRoom;
-  List<TourGuide> tourguides = [
-    TourGuide(
-        name: 'John Doe',
-        imageUrl: 'https://example.com/images/john_doe.jpg',
-        experience: '5 years',
-        language: 'English, Spanish'),
-    TourGuide(
-        name: 'Jane Smith',
-        imageUrl: 'https://example.com/images/jane_smith.jpg',
-        experience: '3 years',
-        language: 'English, French'),
-    TourGuide(
-        name: 'Bob Johnson',
-        imageUrl: 'https://example.com/images/bob_johnson.jpg',
-        experience: '10 years',
-        language: 'English, German'),
-    // Add more tour guides as needed
-  ];
+  TourGuideModel? selectedGuide;
 
   @override
   Widget build(BuildContext context) {
     return AppBArContainerWidget(
-      titleString: 'Hotel Booking',
+      titleString: 'Tour Booking',
       implementTraling: true,
       child: Column(
         children: [
@@ -225,41 +209,39 @@ class _HotelBookingScreenState extends State<HotelBookingScreen> {
             },
           ),
           ItemOptionsBookingWidget(
-            title: 'Tourguide',
-            value: tourguides[0].name,
+            title: 'Tour Guide',
+            value: selectedGuide?.name ?? 'Select a guide',
             icon: AssetHelper.icoBed,
             onTap: () async {
-              TourGuide selectedTourguide = tourguides[0];
-              final result = await showDialog<TourGuide>(
+              final result = await showDialog<TourGuideModel>(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    backgroundColor: Colors.white,
+                    backgroundColor: ColorPalette.backgroundScaffoldColor,
+                    surfaceTintColor: Colors.transparent,
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ItemChangeTourguide(
-                          initData: selectedTourguide,
-                          onTourguideChanged: (TourGuide newTourguide) {
-                            selectedTourguide = newTourguide;
+                        ItemChangeGuide(
+                          guide: TourGuideModel(
+                            name: 'John Doe',
+                            avatarUrl:
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUKbV4ZCrVOwTMkfnN10Mfhwp7BSiVb64BzDuE_lA9w&s',
+                            languages: ['English', 'Spanish'],
+                          ),
+                          onSelected: (TourGuideModel selectedGuide) {
+                            Navigator.of(context).pop(selectedGuide);
                           },
                         ),
-                        SizedBox(
-                          height: 16.0,
-                        ),
-                        TextButton(
-                          child: Text('Select'),
-                          onPressed: () {
-                            Navigator.of(context).pop(selectedTourguide);
-                          },
-                        ),
-                        SizedBox(
-                          height: 16.0,
-                        ),
-                        TextButton(
-                          child: Text('Cancel'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
+                        ItemChangeGuide(
+                          guide: TourGuideModel(
+                            name: 'Jane Smith',
+                            avatarUrl:
+                                'https://avatar.iran.liara.run/public/92',
+                            languages: ['English', 'French', 'German'],
+                          ),
+                          onSelected: (TourGuideModel selectedGuide) {
+                            Navigator.of(context).pop(selectedGuide);
                           },
                         ),
                       ],
@@ -267,9 +249,9 @@ class _HotelBookingScreenState extends State<HotelBookingScreen> {
                   );
                 },
               );
-              if (result is TourGuide) {
+              if (result is TourGuideModel) {
                 setState(() {
-                  tourguides[0].name = result.name;
+                  selectedGuide = result;
                 });
               }
             },

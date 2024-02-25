@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:travo_app/api/api_auth.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
@@ -30,41 +31,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
 
   void signUserUp() async {
-    if (_formKey.currentState!.validate()) {
-      // If the form is valid, display a Snackbar.
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')),
-      );
-
-      // Prepare data to send
-      Map<String, String> headers = {"Content-type": "application/json"};
-      Uri url = Uri.parse("https://hella-booking.onrender.com/api/v1/signUp");
-      var body = json.encode({
-        'email': emailController.text,
-        'name': nameController.text,
-        'password': passwordController.text,
-        'phone': phoneController.text,
-        'gender': gender,
-      });
-
-      // Send the request
-      var response = await http.post(url, headers: headers, body: body);
-      // Do something with the response
-      if (response.statusCode == 200) {
-        log('User signed up successfully');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User signed up successfully')),
-        );
-      } else {
-        var errorResponse = json.decode(response.body);
-        log('Server error: ${errorResponse['message']}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content:
-                  Text('Failed to sign up user: ${errorResponse['message']}')),
-        );
-      }
-    }
+    ApiAuth apiAuth = ApiAuth();
+    apiAuth.register(
+        emailController.text,
+        nameController.text,
+        passwordController.text,
+        phoneController.text,
+        gender,
+        _formKey,
+        context);
   }
 
   @override
@@ -75,7 +50,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return AppBArContainerWidget(
       titleString: 'Sign Up',
-      isLoggedIn: true,
       child: Form(
         key: _formKey,
         child: Center(
