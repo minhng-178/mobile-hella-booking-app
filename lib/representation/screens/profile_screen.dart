@@ -8,7 +8,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBArContainerWidget(
+    return AppBarContainerWidget(
         titleString: 'Profile',
         implementLeading: false,
         child: Center(

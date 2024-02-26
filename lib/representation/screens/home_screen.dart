@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
 import 'package:travo_app/representation/screens/tour_booking_screen.dart';
+import 'package:travo_app/representation/screens/tours_screen.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -129,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBArContainerWidget(
+    return AppBarContainerWidget(
       titleString: 'Home',
       implementLeading: false,
       implementTraling: true,
@@ -171,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ImageHelper.loadFromAsset(AssetHelper.icoHotel,
                         width: kDefaultIconSize, height: kDefaultIconSize),
                     Color(0xffFE9C5E), () {
-                  Navigator.of(context).pushNamed(TourBookingScreen.routeName);
+                  Navigator.of(context).pushNamed(ToursScreen.routeName);
                 }, 'Tours'),
               ),
               SizedBox(width: kDefaultPadding),

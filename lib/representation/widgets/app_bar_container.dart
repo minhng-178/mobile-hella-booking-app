@@ -12,8 +12,8 @@ import 'package:travo_app/representation/screens/login_screen.dart';
 import 'package:travo_app/representation/screens/register_screen.dart';
 import 'package:travo_app/representation/widgets/item_drawer_widget.dart';
 
-class AppBArContainerWidget extends StatelessWidget {
-  const AppBArContainerWidget(
+class AppBarContainerWidget extends StatelessWidget {
+  const AppBarContainerWidget(
       {super.key,
       required this.child,
       this.title,
