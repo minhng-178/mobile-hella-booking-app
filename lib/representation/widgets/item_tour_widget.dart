@@ -59,13 +59,14 @@ class ItemTourWidget extends StatelessWidget {
                 Row(
                   children: [
                     ImageHelper.loadFromAsset(
-                      AssetHelper.icoStar,
+                      AssetHelper.icoVehicle,
                     ),
                     SizedBox(
                       width: kMinPadding,
                     ),
                     Text(
-                      tourModel.price.toString(),
+                      '${tourModel.vehicleName} - ${tourModel.vehicleCapacity}',
+                      style: TextStyles.defaultStyle.subTitleTextColor,
                     ),
                   ],
                 )

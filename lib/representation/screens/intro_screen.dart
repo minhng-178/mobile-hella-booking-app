@@ -72,13 +72,13 @@ class _IntroScreenState extends State<IntroScreen> {
           children: [
             _buildItemIntroScreen(
                 AssetHelper.slide1,
-                'Book a flight',
-                'Found a flight that matches your destination and schedule? Book it instantly.',
+                'Book a tour',
+                'Explore the wonders of the world with our tailor-made tours and travel packages.',
                 Alignment.centerRight),
             _buildItemIntroScreen(
                 AssetHelper.slide2,
-                'Find a hotel room',
-                'Select the day, book your room. We give you the best price.',
+                'Find your perfect tour',
+                'Browse our selection of tours by category, duration, price, and rating. ',
                 Alignment.center),
             _buildItemIntroScreen(
                 AssetHelper.slide3,

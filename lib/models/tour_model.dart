@@ -3,7 +3,8 @@ class TourModel {
   final String tourName;
   final bool status;
   final double price;
-  final int vehicleTypeId;
+  final String vehicleName;
+  final String vehicleCapacity;
   final String tourType;
   final String? image;
 
@@ -13,7 +14,8 @@ class TourModel {
     required this.status,
     required this.price,
     required this.tourType,
-    required this.vehicleTypeId,
+    required this.vehicleName,
+    required this.vehicleCapacity,
     this.image,
   });
 
@@ -23,7 +25,8 @@ class TourModel {
       tourName: json['tourName'],
       status: json['status'],
       price: json['price'].toDouble(),
-      vehicleTypeId: json['vehicleTypeId'],
+      vehicleName: json['vehicleName'],
+      vehicleCapacity: json['vehicleCapacity'],
       tourType: json['tourType'],
       image: json['image'],
     );

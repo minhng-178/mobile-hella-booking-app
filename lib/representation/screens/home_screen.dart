@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Expanded(
                 child: _buildItemCategory(
-                    ImageHelper.loadFromAsset(AssetHelper.icoHotel,
+                    ImageHelper.loadFromAsset(AssetHelper.icoTour,
                         width: kDefaultIconSize, height: kDefaultIconSize),
                     Color(0xffFE9C5E), () {
                   Navigator.of(context).pushNamed(ToursScreen.routeName);

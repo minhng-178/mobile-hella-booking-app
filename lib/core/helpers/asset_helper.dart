@@ -2,7 +2,7 @@ mixin AssetHelper {
   //Assets in icons
   static const String icoOvalTop = 'assets/icons/ico_oval_top.png';
   static const String icoOvalBottom = 'assets/icons/ico_oval_bottom.png';
-  static const String icoHotel = 'assets/icons/ico_hotel.png';
+  static const String icoTour = 'assets/icons/ico_vector.png';
   static const String icoPlane = 'assets/icons/ico_plane.png';
   static const String icoHotelPlane = 'assets/icons/ico_hotel_plane.png';
   static const String icoBed = 'assets/icons/ico_bed.png';
@@ -21,6 +21,7 @@ mixin AssetHelper {
   static const String icoUser = 'assets/icons/ico_user.png';
   static const String icoPromo = 'assets/icons/ico_promo.png';
   static const String icoMenu = 'assets/icons/ico_bars.png';
+  static const String icoVehicle = 'assets/icons/ico_bus.png';
 
   //Assets in images
   static const String backgroundSplash = 'assets/images/background_splash.png';

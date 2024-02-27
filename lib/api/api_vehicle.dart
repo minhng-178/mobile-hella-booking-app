@@ -27,7 +27,7 @@ class ApiVehicles {
         return [];
       }
     } catch (e) {
-      throw Exception('Failed to load tours: $e');
+      throw Exception('Failed to load vehicle: $e');
     }
   }
 }
