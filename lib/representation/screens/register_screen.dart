@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:travo_app/api/api_auth.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
@@ -48,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return double.tryParse(str) != null;
     }
 
-    return AppBArContainerWidget(
+    return AppBarContainerWidget(
       titleString: 'Sign Up',
       child: Form(
         key: _formKey,

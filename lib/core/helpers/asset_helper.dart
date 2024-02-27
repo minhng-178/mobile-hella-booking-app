@@ -23,6 +23,7 @@ mixin AssetHelper {
 
   //Assets in images
   static const String backgroundSplash = 'assets/images/background_splash.png';
+  static const String placeholder = 'assets/images/600x400.png';
   static const String circleSplash = 'assets/images/circle_splash.png';
   static const String hotelScreen = 'assets/images/hotel_screen.png';
   static const String imageMap = 'assets/images/image_map.png';

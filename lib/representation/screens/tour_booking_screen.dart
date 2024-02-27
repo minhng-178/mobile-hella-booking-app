@@ -29,7 +29,7 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBArContainerWidget(
+    return AppBarContainerWidget(
       titleString: 'Tour Booking',
       implementTraling: true,
       child: Column(

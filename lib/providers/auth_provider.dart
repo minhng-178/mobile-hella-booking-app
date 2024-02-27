@@ -7,11 +7,14 @@ class AuthProvider with ChangeNotifier {
 
   bool get isLoggedIn => _isLoggedIn;
 
+  set isLoggedIn(bool value) {
+    _isLoggedIn = value;
+    notifyListeners();
+  }
+
   Future<void> checkTokens() async {
     String? refreshToken = await storage.read(key: 'refreshToken');
     _isLoggedIn = refreshToken != null;
-
-    notifyListeners();
   }
 
   Future<void> signOut() async {

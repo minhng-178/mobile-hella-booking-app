@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBArContainerWidget(
+    return AppBarContainerWidget(
       titleString: 'Login',
       child: Form(
         key: _formKey,

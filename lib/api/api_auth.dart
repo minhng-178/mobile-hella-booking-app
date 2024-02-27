@@ -3,17 +3,23 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:travo_app/core/constants/api_constants.dart';
+import 'package:travo_app/providers/auth_provider.dart';
 import 'package:travo_app/representation/screens/main_app.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:travo_app/representation/services/notifi_service.dart';
 
 class ApiAuth {
   final Dio _dio = Dio();
   final storage = FlutterSecureStorage();
-  final String _baseUrl = "https://hella-booking.onrender.com/api/v1";
+  final String _baseUrl = baseUrl;
 
   Future<void> signIn(String email, String password,
       GlobalKey<FormState> formKey, BuildContext context) async {
+    final navigator = Navigator.of(context);
+    final userProvider = Provider.of<AuthProvider>(context, listen: false);
+
     if (formKey.currentState!.validate()) {
       // If the form is valid, display a Snackbar.
       ScaffoldMessenger.of(context).showSnackBar(
@@ -46,7 +52,7 @@ class ApiAuth {
           await storage.write(key: 'accessToken', value: accessToken);
           await storage.write(key: 'refreshToken', value: refreshToken);
 
-          final navigator = Navigator.of(context);
+          userProvider.isLoggedIn = refreshToken != null;
 
           navigator.pushReplacementNamed(MainApp.routeName);
         } else {
