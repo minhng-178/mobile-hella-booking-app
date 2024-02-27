@@ -6,8 +6,6 @@ class TourModel {
   final int vehicleTypeId;
   final String tourType;
   final String? image;
-  // final DateTime createdAt;
-  // final DateTime updatedAt;
 
   TourModel({
     required this.id,
@@ -17,8 +15,6 @@ class TourModel {
     required this.tourType,
     required this.vehicleTypeId,
     this.image,
-    // required this.createdAt,
-    // required this.updatedAt,
   });
 
   factory TourModel.fromJson(Map<String, dynamic> json) {
@@ -30,8 +26,6 @@ class TourModel {
       vehicleTypeId: json['vehicleTypeId'],
       tourType: json['tourType'],
       image: json['image'],
-      // createdAt: DateTime.parse(json['createdAt']),
-      // updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 }

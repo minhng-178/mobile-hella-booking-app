@@ -113,11 +113,8 @@ class AppBarContainerWidget extends StatelessWidget {
                                           kDefaultPadding),
                                       color: Colors.white),
                                   padding: EdgeInsets.all(kItemPadding),
-                                  child: Icon(
-                                    FontAwesomeIcons.bars,
-                                    size: kDefaultPadding,
-                                    color: Colors.black,
-                                  ),
+                                  child: ImageHelper.loadFromAsset(
+                                      AssetHelper.icoMenu),
                                 ),
                               )
                             else if (!isLoggedIn &&
