@@ -41,9 +41,10 @@ class AppBArContainerWidget extends StatelessWidget {
     final isLoggedIn = userProvider.isLoggedIn;
     final isLoginPage =
         ModalRoute.of(context)?.settings.name == LoginScreen.routeName;
-
     final isRegisterPage =
         ModalRoute.of(context)?.settings.name == RegisterScreen.routeName;
+
+    print(isLoggedIn);
 
     return Scaffold(
       endDrawer: ItemDrawer(),

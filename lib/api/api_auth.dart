@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:travo_app/representation/screens/home_screen.dart';
 import 'package:travo_app/representation/screens/main_app.dart';
 import 'package:travo_app/representation/services/notifi_service.dart';
 
@@ -86,7 +85,7 @@ class ApiAuth {
           '$_baseUrl/signUp',
           data: {
             'email': email,
-            'name': name,
+            'fullName': name,
             'password': password,
             'phone': phone,
             'gender': gender,
@@ -101,9 +100,8 @@ class ApiAuth {
         if (response.statusCode == 200) {
           log('User signed up successfully');
           // Handle successful sign up...
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('User signed up successfully')),
-          );
+          NotificationService().showNotification(
+              title: 'Register Success!', body: 'Welcome to our app!');
         } else {
           log('Failed to sign up user');
           // Handle failed sign up...
