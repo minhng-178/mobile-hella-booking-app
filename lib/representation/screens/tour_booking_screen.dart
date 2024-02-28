@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:travo_app/core/extensions/date_ext.dart';
+import 'package:provider/provider.dart';
+
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/models/tourguide_model.dart';
+import 'package:travo_app/providers/dialog_provider.dart';
 import 'package:travo_app/representation/services/notifi_service.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
@@ -23,8 +24,7 @@ class TourBookingScreen extends StatefulWidget {
 
 class _TourBookingScreenState extends State<TourBookingScreen> {
   String? selectDate;
-  String? selectTime;
-  String? guestAndRoom;
+  String? totalCustomer;
   TourGuideModel? selectedGuide;
 
   @override
@@ -43,112 +43,87 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
             icon: AssetHelper.icoLocation,
             onTap: () {},
           ),
-          ItemOptionsBookingWidget(
-            title: 'Select Date',
-            value: selectDate ?? 'Select date',
-            icon: AssetHelper.icoCalendal,
-            onTap: () async {
-              final result = await showModalBottomSheet<List<DateTime?>>(
-                context: context,
-                builder: (BuildContext context) {
-                  DateTime? rangeStartDate;
-                  DateTime? rangeEndDate;
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: kMediumPadding,
-                      ),
-                      SfDateRangePicker(
-                        view: DateRangePickerView.month,
-                        selectionMode: DateRangePickerSelectionMode.range,
-                        monthViewSettings:
-                            DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
-                        selectionColor: ColorPalette.yellowColor,
-                        startRangeSelectionColor: ColorPalette.yellowColor,
-                        endRangeSelectionColor: ColorPalette.yellowColor,
-                        rangeSelectionColor:
-                            ColorPalette.yellowColor.withOpacity(0.25),
-                        todayHighlightColor: ColorPalette.yellowColor,
-                        toggleDaySelection: true,
-                        onSelectionChanged:
-                            (DateRangePickerSelectionChangedArgs args) {
-                          if (args.value is PickerDateRange) {
-                            rangeStartDate = args.value.startDate;
-                            rangeEndDate = args.value.endDate;
-                          } else {
-                            rangeStartDate = null;
-                            rangeEndDate = null;
-                          }
-                        },
-                      ),
-                      ItemButtonWidget(
-                        data: 'Select',
-                        onTap: () {
-                          Navigator.of(context)
-                              .pop([rangeStartDate, rangeEndDate]);
-                        },
-                      ),
-                      SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      ItemButtonWidget(
-                        data: 'Cancel',
-                        color: ColorPalette.primaryColor.withOpacity(0.1),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-              if (result is List<DateTime?>) {
-                setState(() {
-                  selectDate =
-                      '${result[0]?.getStartDate} - ${result[1]?.getEndDate}';
-                });
-              }
-            },
-          ),
-          ItemOptionsBookingWidget(
-            title: 'Select Time',
-            value: selectTime ?? 'Select time',
-            icon: AssetHelper.icoStar,
-            onTap: () async {
-              final TimeOfDay? pickedTime = await showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.now(),
-                builder: (BuildContext context, Widget? child) {
-                  return Theme(
-                    data: ThemeData.light().copyWith(
-                      primaryColor: ColorPalette
-                          .primaryColor, // Change this to your desired color.
-                      colorScheme: ColorScheme.light(
-                        primary: ColorPalette
-                            .primaryColor, // Change this to your desired color.
-                      ),
-                      buttonTheme: ButtonThemeData(
-                        textTheme: ButtonTextTheme.primary,
-                      ),
-                      dialogBackgroundColor: ColorPalette
-                          .primaryColor, // Change this to your desired color.
-                    ),
-                    child: child!,
-                  );
-                },
-              );
-              if (pickedTime != null) {
-                setState(() {
-                  selectTime = pickedTime.format(context);
-                });
-              }
-            },
-          ),
+          // ItemOptionsBookingWidget(
+          //   title: 'Select Date',
+          //   value: selectDate ?? 'Select date',
+          //   icon: AssetHelper.icoCalendal,
+          //   onTap: () async {
+          //     final result = await showModalBottomSheet<List<DateTime?>>(
+          //       context: context,
+          //       builder: (BuildContext context) {
+          //         DateTime? rangeStartDate;
+          //         DateTime? rangeEndDate;
+          //         return Column(
+          //           children: [
+          //             SizedBox(
+          //               height: kMediumPadding,
+          //             ),
+          //             SfDateRangePicker(
+          //               view: DateRangePickerView.month,
+          //               selectionMode: DateRangePickerSelectionMode.range,
+          //               monthViewSettings:
+          //                   DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
+          //               selectionColor: ColorPalette.yellowColor,
+          //               startRangeSelectionColor: ColorPalette.yellowColor,
+          //               endRangeSelectionColor: ColorPalette.yellowColor,
+          //               rangeSelectionColor:
+          //                   ColorPalette.yellowColor.withOpacity(0.25),
+          //               todayHighlightColor: ColorPalette.yellowColor,
+          //               toggleDaySelection: true,
+          //               onSelectionChanged:
+          //                   (DateRangePickerSelectionChangedArgs args) {
+          //                 if (args.value is PickerDateRange) {
+          //                   rangeStartDate = args.value.startDate;
+          //                   rangeEndDate = args.value.endDate;
+          //                 } else {
+          //                   rangeStartDate = null;
+          //                   rangeEndDate = null;
+          //                 }
+          //               },
+          //             ),
+          //             ItemButtonWidget(
+          //               data: 'Select',
+          //               onTap: () {
+          //                 Navigator.of(context)
+          //                     .pop([rangeStartDate, rangeEndDate]);
+          //               },
+          //             ),
+          //             SizedBox(
+          //               height: kDefaultPadding,
+          //             ),
+          //             ItemButtonWidget(
+          //               data: 'Cancel',
+          //               color: ColorPalette.primaryColor.withOpacity(0.1),
+          //               onTap: () {
+          //                 Navigator.of(context).pop();
+          //               },
+          //             ),
+          //           ],
+          //         );
+          //       },
+          //     );
+          //     if (result is List<DateTime?>) {
+          //       setState(() {
+          //         selectDate =
+          //             '${result[0]?.getStartDate} - ${result[1]?.getEndDate}';
+          //       });
+          //     }
+          //   },
+          // ),
           ItemOptionsBookingWidget(
             title: 'Tourist',
-            value: guestAndRoom ?? 'Tourist',
+            value: totalCustomer ?? 'Tourist',
             icon: AssetHelper.icoBed,
             onTap: () async {
+              // if (totalCustomer == null) {
+              //   Provider.of<DialogProvider>(context, listen: false).showDialog(
+              //     'error',
+              //     'Error',
+              //     'Please select the number of tourists before submitting.',
+              //     context,
+              //   );
+              //   return;
+              // }
               int adults = 1;
               int kids = 1;
               final result = await showDialog<List<int>>(
@@ -203,7 +178,7 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                 setState(() {
                   adults = result[0];
                   kids = result[1];
-                  guestAndRoom = '${result[0]} Adults, ${result[1]} Kids';
+                  totalCustomer = '${result[0]} Adults, ${result[1]} Kids';
                 });
               }
             },
@@ -213,6 +188,15 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
             value: selectedGuide?.name ?? 'Select a guide',
             icon: AssetHelper.icoBed,
             onTap: () async {
+              // if (selectedGuide == null) {
+              //   Provider.of<DialogProvider>(context, listen: false).showDialog(
+              //     'error',
+              //     'Error',
+              //     'Please select a tour guide before submitting.',
+              //     context,
+              //   );
+              //   return;
+              // }
               final result = await showDialog<TourGuideModel>(
                 context: context,
                 builder: (BuildContext context) {

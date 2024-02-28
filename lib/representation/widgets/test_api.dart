@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travo_app/api/api_vehicle.dart';
 import 'package:travo_app/models/vehicle_model.dart';
+import 'package:travo_app/representation/screens/tour_booking_screen.dart';
 
 class VehicleWidget extends StatefulWidget {
   @override
@@ -24,17 +25,12 @@ class _VehicleWidgetState extends State<VehicleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Vehicles'),
-      ),
-      body: ListView.builder(
-        itemCount: _vehicles.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_vehicles[index].vehicleName),
-          );
-        },
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(TourBookingScreen.routeName);
+      },
+      child: Center(
+        child: Text('Click me!'),
       ),
     );
   }

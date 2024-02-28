@@ -1,18 +1,17 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-
 import 'package:travo_app/core/constants/api_constants.dart';
-import 'package:travo_app/models/vehicle_model.dart';
+import 'package:travo_app/models/location_in_tour_model.dart';
 
-class ApiVehicles {
+class ApiLocations {
   final Dio _dio = Dio();
   final String _baseUrl = baseUrl;
 
-  Future<List<VehicleModel>> getAllVehicles() async {
+  Future<List<LocationInTourModel>> getAllLocations() async {
     try {
       Response response = await _dio.get(
-        '$_baseUrl/vehicles',
+        '$_baseUrl/locationsInTours',
         options: Options(
           headers: {
             "Content-type": "application/json",
@@ -20,16 +19,18 @@ class ApiVehicles {
         ),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 202) {
         Map<String, dynamic> data = response.data;
-        List<dynamic> vehicles = data['data'];
+        List<dynamic> locations = data['data'];
 
-        return vehicles.map((tour) => VehicleModel.fromJson(tour)).toList();
+        return locations
+            .map((tour) => LocationInTourModel.fromJson(tour))
+            .toList();
       } else {
         return [];
       }
     } catch (e) {
-      log('Failed to load vehicles: $e');
+      log('Failed to load locations in tours: $e');
       throw Exception('Oops! Something when wrong please wait...');
     }
   }

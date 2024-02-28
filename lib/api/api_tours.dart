@@ -1,9 +1,11 @@
-import 'package:dio/dio.dart';
-import 'package:travo_app/api/api_vehicle.dart';
+import 'dart:developer';
 
-import 'package:travo_app/core/constants/api_constants.dart';
+import 'package:dio/dio.dart';
+
+import 'package:travo_app/api/api_vehicle.dart';
 import 'package:travo_app/models/tour_model.dart';
 import 'package:travo_app/models/vehicle_model.dart';
+import 'package:travo_app/core/constants/api_constants.dart';
 
 class ApiTours {
   final Dio _dio = Dio();
@@ -42,7 +44,8 @@ class ApiTours {
         return [];
       }
     } catch (e) {
-      throw Exception('Failed to load tours: $e');
+      log('Failed to load tours: $e');
+      throw Exception('Oops! Something when wrong please wait...');
     }
   }
 }

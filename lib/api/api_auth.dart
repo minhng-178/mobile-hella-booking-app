@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travo_app/core/constants/api_constants.dart';
 import 'package:travo_app/providers/auth_provider.dart';
+import 'package:travo_app/representation/screens/login_screen.dart';
 import 'package:travo_app/representation/screens/main_app.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:travo_app/representation/services/notifi_service.dart';
@@ -17,12 +18,13 @@ class ApiAuth {
 
   Future<void> signIn(String email, String password,
       GlobalKey<FormState> formKey, BuildContext context) async {
-    final navigator = Navigator.of(context);
     final userProvider = Provider.of<AuthProvider>(context, listen: false);
+    final navigator = Navigator.of(context);
+    final snackBar = ScaffoldMessenger.of(context);
 
     if (formKey.currentState!.validate()) {
       // If the form is valid, display a Snackbar.
-      ScaffoldMessenger.of(context).showSnackBar(
+      snackBar.showSnackBar(
         const SnackBar(content: Text('Processing Data')),
       );
 
@@ -60,14 +62,20 @@ class ApiAuth {
           // Handle failed login...
           var errorResponse = json.decode(response.data);
           log('Server error: ${errorResponse['message']}');
-          ScaffoldMessenger.of(context).showSnackBar(
+          snackBar.showSnackBar(
             SnackBar(
                 content:
-                    Text('Failed to log in user: ${errorResponse['message']}')),
+                    Text('Failed to log in user: ${errorResponse['message']}'),  backgroundColor: Colors.red),
           );
         }
       } catch (e) {
         log('Server error: $e');
+        snackBar.showSnackBar(
+          SnackBar(
+            content: Text('Failed to log in user!'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -80,6 +88,9 @@ class ApiAuth {
       String? gender,
       GlobalKey<FormState> formKey,
       BuildContext context) async {
+    final navigator = Navigator.of(context);
+    final snackBar = ScaffoldMessenger.of(context);
+
     if (formKey.currentState!.validate()) {
       // If the form is valid, display a Snackbar.
       ScaffoldMessenger.of(context).showSnackBar(
@@ -105,22 +116,24 @@ class ApiAuth {
 
         if (response.statusCode == 200) {
           log('User signed up successfully');
-          // Handle successful sign up...
           NotificationService().showNotification(
               title: 'Register Success!', body: 'Welcome to our app!');
+          navigator.pushReplacementNamed(LoginScreen.routeName);
         } else {
           log('Failed to sign up user');
-          // Handle failed sign up...
           var errorResponse = json.decode(response.data);
           log('Server error: ${errorResponse['message']}');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text(
-                    'Failed to sign up user: ${errorResponse['message']}')),
-          );
+          snackBar.showSnackBar(SnackBar(
+            content: Text("Failed to sign up user"),
+            backgroundColor: Colors.red,
+          ));
         }
       } catch (e) {
         log('Server error: $e');
+        snackBar.showSnackBar(SnackBar(
+          content: Text("Failed to sign up user"),
+          backgroundColor: Colors.red,
+        ));
       }
     }
   }
