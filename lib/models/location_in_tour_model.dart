@@ -34,6 +34,6 @@ class LocationInTourModel {
 
   @override
   String toString() {
-    return 'LocationInTourModel{id: $id, duration: $duration, startCity: $startCity, endCity: $endCity}';
+    return 'LocationInTourModel{id: $id, tourId: $tourId, locationId: $locationId, duration: $duration, startCity: $startCity, endCity: $endCity}';
   }
 }

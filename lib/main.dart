@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:travo_app/providers/dialog_provider.dart';
 import 'package:travo_app/routes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -13,17 +14,23 @@ void main() async {
   await Hive.initFlutter();
   await LocalStorageHelper.initLocalStorageHelper();
   final authProvider = AuthProvider();
+  final dialogProvider = DialogProvider();
   await authProvider.checkTokens();
-  runApp(ChangeNotifierProvider(
-    create: (context) => authProvider,
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => authProvider),
+        ChangeNotifierProvider(create: (context) => dialogProvider),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // * This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

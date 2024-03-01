@@ -115,15 +115,6 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
             value: totalCustomer ?? 'Tourist',
             icon: AssetHelper.icoBed,
             onTap: () async {
-              // if (totalCustomer == null) {
-              //   Provider.of<DialogProvider>(context, listen: false).showDialog(
-              //     'error',
-              //     'Error',
-              //     'Please select the number of tourists before submitting.',
-              //     context,
-              //   );
-              //   return;
-              // }
               int adults = 1;
               int kids = 1;
               final result = await showDialog<List<int>>(
@@ -188,15 +179,6 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
             value: selectedGuide?.name ?? 'Select a guide',
             icon: AssetHelper.icoBed,
             onTap: () async {
-              // if (selectedGuide == null) {
-              //   Provider.of<DialogProvider>(context, listen: false).showDialog(
-              //     'error',
-              //     'Error',
-              //     'Please select a tour guide before submitting.',
-              //     context,
-              //   );
-              //   return;
-              // }
               final result = await showDialog<TourGuideModel>(
                 context: context,
                 builder: (BuildContext context) {
@@ -246,6 +228,26 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
           ItemButtonWidget(
             data: 'Submit',
             onTap: () {
+              if (totalCustomer == null) {
+                Provider.of<DialogProvider>(context, listen: false).showDialog(
+                  'error',
+                  'Error',
+                  'Please select the number of tourists before submitting.',
+                  context,
+                );
+                return;
+              }
+
+              if (selectedGuide == null) {
+                Provider.of<DialogProvider>(context, listen: false).showDialog(
+                  'error',
+                  'Error',
+                  'Please select a tour guide before submitting.',
+                  context,
+                );
+                return;
+              }
+
               NotificationService().showNotification(
                   title: 'Booking Success!', body: 'Just one more step to go!');
             },
