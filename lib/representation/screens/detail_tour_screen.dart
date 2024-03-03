@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
+import 'package:travo_app/core/constants/textstyle_constants.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
-import 'package:travo_app/representation/widgets/test_api.dart';
+import 'package:travo_app/models/location_in_tour_model.dart';
+import 'package:travo_app/representation/screens/tour_booking_screen.dart';
+import 'package:travo_app/representation/widgets/dash_line.dart';
+import 'package:travo_app/representation/widgets/item_button_widget.dart';
+import 'package:travo_app/representation/widgets/item_utility_tour.dart';
 
 class DetailTourScreen extends StatefulWidget {
-  const DetailTourScreen({super.key});
   static const String routeName = '/detail_tour_screen';
+
+  const DetailTourScreen({super.key, required this.tourModel});
+
+  final LocationInTourModel tourModel;
 
   @override
   State<DetailTourScreen> createState() => _DetailTourScreenState();
@@ -83,8 +91,145 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                       topRight: Radius.circular(kDefaultPadding * 2),
                     ),
                   ),
-                  //Mai lam tiep
-                  child: VehicleWidget(),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: kDefaultPadding),
+                        child: Container(
+                          height: 5,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(kItemPadding),
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: kMediumPadding,
+                      ),
+                      Expanded(
+                        child: ListView(
+                          controller: scrollController,
+                          padding: EdgeInsets.zero,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      widget.tourModel.tourName,
+                                      style: TextStyles
+                                          .defaultStyle.fontHeader.bold,
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      '\$${widget.tourModel.price.toString()}',
+                                      style: TextStyles
+                                          .defaultStyle.fontHeader.bold,
+                                    ),
+                                    Text(
+                                      ' /person',
+                                      style:
+                                          TextStyles.defaultStyle.fontCaption,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: kDefaultPadding,
+                                ),
+                                Row(
+                                  children: [
+                                    ImageHelper.loadFromAsset(
+                                      AssetHelper.icoLocationBlank,
+                                    ),
+                                    SizedBox(
+                                      width: kMinPadding,
+                                    ),
+                                    Text(widget.tourModel.tourType),
+                                    Spacer(),
+                                    Text(
+                                      '${widget.tourModel.vehicleName} - ${widget.tourModel.vehicleCapacity}',
+                                    ),
+                                  ],
+                                ),
+                                DashLineWidget(),
+                                SizedBox(
+                                  height: kDefaultPadding,
+                                ),
+                                Row(
+                                  children: [
+                                    ImageHelper.loadFromAsset(
+                                      AssetHelper.icoStar,
+                                    ),
+                                    SizedBox(
+                                      width: kMinPadding,
+                                    ),
+                                    Text('Duration'),
+                                    Spacer(),
+                                    Text(
+                                      widget.tourModel.duration,
+                                    ),
+                                  ],
+                                ),
+                                DashLineWidget(),
+                                SizedBox(
+                                  height: kDefaultPadding,
+                                ),
+                                Text(
+                                  'Infomation',
+                                  style: TextStyles.defaultStyle.bold,
+                                ),
+                                SizedBox(
+                                  height: kDefaultPadding,
+                                ),
+                                Text(
+                                  widget.tourModel.description,
+                                ),
+                                ItemUtilityTour(),
+                                SizedBox(
+                                  height: kDefaultPadding,
+                                ),
+                                DashLineWidget(),
+                                SizedBox(
+                                  height: kDefaultPadding,
+                                ),
+                                Text(
+                                  'Location: ${widget.tourModel.locationName}',
+                                  style: TextStyles.defaultStyle.bold,
+                                ),
+                                SizedBox(
+                                  height: kDefaultPadding,
+                                ),
+                                Text(widget.tourModel.locationAddress),
+                                SizedBox(
+                                  height: kDefaultPadding,
+                                ),
+                                ImageHelper.loadFromAsset(
+                                  AssetHelper.imageMap,
+                                  width: double.infinity,
+                                ),
+                                SizedBox(
+                                  height: kMediumPadding,
+                                ),
+                                ItemButtonWidget(
+                                    data: 'Book now',
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          TourBookingScreen.routeName,
+                                          arguments: widget.tourModel);
+                                    }),
+                                SizedBox(
+                                  height: kMediumPadding,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 );
               })
         ],

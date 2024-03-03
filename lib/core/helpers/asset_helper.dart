@@ -22,6 +22,11 @@ mixin AssetHelper {
   static const String icoPromo = 'assets/icons/ico_promo.png';
   static const String icoMenu = 'assets/icons/ico_bars.png';
   static const String icoVehicle = 'assets/icons/ico_bus.png';
+  static const String icoLocations = 'assets/icons/ico_locations.png';
+  static const String icoDuration = 'assets/icons/ico_duration.png';
+  static const String icoReschedule = 'assets/icons/ico_non-reschedule.png';
+  static const String icoCustomers = 'assets/icons/ico_non-reschedule.png';
+  static const String icoTourguide = 'assets/icons/ico_non-reschedule.png';
 
   //Assets in images
   static const String backgroundSplash = 'assets/images/background_splash.png';

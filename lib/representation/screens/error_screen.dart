@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
+import 'package:travo_app/representation/screens/main_app.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
 
 class ErrorScreen extends StatelessWidget {
@@ -43,7 +44,9 @@ class ErrorScreen extends StatelessWidget {
             right: 250,
             child: ItemButtonWidget(
               data: 'Home',
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(MainApp.routeName);
+              },
             ),
           ),
         ],

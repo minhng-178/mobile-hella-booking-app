@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:travo_app/providers/dialog_provider.dart';
+import 'package:travo_app/core/helpers/size_config.dart';
 import 'package:travo_app/routes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:travo_app/providers/auth_provider.dart';
+import 'package:travo_app/providers/dialog_provider.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/helpers/local_storage_helper.dart';
 import 'package:travo_app/representation/screens/error_screen.dart';
@@ -46,7 +47,13 @@ class MyApp extends StatelessWidget {
         return MaterialPageRoute(builder: (context) => ErrorScreen());
       },
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      onGenerateRoute: generateRoutes,
+      home: Builder(
+        builder: (context) {
+          SizeConfig.init(context);
+          return SplashScreen();
+        },
+      ),
     );
   }
 }

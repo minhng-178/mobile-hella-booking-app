@@ -3,9 +3,9 @@ class TourModel {
   final String tourName;
   final bool status;
   final double price;
+  final String tourType;
   final String vehicleName;
   final String vehicleCapacity;
-  final String tourType;
   final String? image;
 
   TourModel({
@@ -30,5 +30,9 @@ class TourModel {
       tourType: json['tourType'],
       image: json['image'],
     );
+  }
+  @override
+  String toString() {
+    return 'TourModel{id: $id, tourName: $tourName, tourType: $tourType}';
   }
 }

@@ -7,6 +7,13 @@ class LocationInTourModel {
   final String description;
   final String startCity;
   final String endCity;
+  final String locationName;
+  final String locationAddress;
+  final String tourName;
+  final String tourType;
+  final double price;
+  final String vehicleName;
+  final String vehicleCapacity;
 
   LocationInTourModel({
     required this.id,
@@ -17,6 +24,13 @@ class LocationInTourModel {
     required this.description,
     required this.startCity,
     required this.endCity,
+    required this.locationName,
+    required this.locationAddress,
+    required this.tourName,
+    required this.price,
+    required this.tourType,
+    required this.vehicleName,
+    required this.vehicleCapacity,
   });
 
   factory LocationInTourModel.fromJson(Map<String, dynamic> json) {
@@ -29,11 +43,18 @@ class LocationInTourModel {
       description: json['description'],
       startCity: json['startCity'],
       endCity: json['endCity'],
+      locationName: json['locationName'] ?? '',
+      locationAddress: json['locationAddress'] ?? '',
+      tourName: json['tourName'] ?? '',
+      tourType: json['tourType'] ?? '',
+      price: json['price']?.toDouble() ?? 0.0,
+      vehicleName: json['vehicleName'] ?? '',
+      vehicleCapacity: json['vehicleCapacity'] ?? '',
     );
   }
 
   @override
   String toString() {
-    return 'LocationInTourModel{id: $id, tourId: $tourId, locationId: $locationId, duration: $duration, startCity: $startCity, endCity: $endCity}';
+    return 'LocationInTourModel{id: $id, tourId: $tourId, locationId: $locationId, duration: $duration, description: $description, startCity: $startCity, endCity: $endCity, locationName: $locationName, locationAddress: $locationAddress, tourName: $tourName, tourType: $tourType, price: $price, vehicleName: $vehicleName}';
   }
 }

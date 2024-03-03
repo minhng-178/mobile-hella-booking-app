@@ -178,11 +178,11 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(width: kDefaultPadding),
               Expanded(
                 child: _buildItemCategory(
-                    ImageHelper.loadFromAsset(AssetHelper.icoPlane,
+                    ImageHelper.loadFromAsset(AssetHelper.icoLocations,
                         width: kDefaultIconSize, height: kDefaultIconSize),
                     Color(0xffF77777),
                     () {},
-                    'Flights'),
+                    'Locations'),
               ),
               SizedBox(width: kDefaultPadding),
               Expanded(

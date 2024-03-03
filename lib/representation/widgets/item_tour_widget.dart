@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:travo_app/core/constants/dimension_constants.dart';
-import 'package:travo_app/core/constants/textstyle_constants.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
-import 'package:travo_app/models/tour_model.dart';
+import 'package:travo_app/models/location_in_tour_model.dart';
 import 'package:travo_app/representation/widgets/dash_line.dart';
+import 'package:travo_app/core/constants/textstyle_constants.dart';
+import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
 
 class ItemTourWidget extends StatelessWidget {
   const ItemTourWidget(
       {super.key, required this.tourModel, required this.onTap});
 
-  final TourModel tourModel;
+  final LocationInTourModel tourModel;
   final Function()? onTap;
   @override
   Widget build(BuildContext context) {
@@ -66,6 +66,28 @@ class ItemTourWidget extends StatelessWidget {
                     ),
                     Text(
                       '${tourModel.vehicleName} - ${tourModel.vehicleCapacity}',
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: kDefaultPadding,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        ImageHelper.loadFromAsset(
+                          AssetHelper.icoDuration,
+                        ),
+                        SizedBox(
+                          width: kMinPadding,
+                        ),
+                        Text('Duration:'),
+                      ],
+                    ),
+                    Text(
+                      tourModel.duration,
                       style: TextStyles.defaultStyle.subTitleTextColor,
                     ),
                   ],
