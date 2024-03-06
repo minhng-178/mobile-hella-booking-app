@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 
 class ItemSquareTitle extends StatelessWidget {
   final String imagePath;
-  const ItemSquareTitle({
-    super.key,
-    required this.imagePath,
-  });
+  final Function()? onTap;
+
+  const ItemSquareTitle({super.key, required this.imagePath, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.grey[200],
-      ),
-      child: Image.asset(
-        imagePath,
-        height: 40,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(16),
+          color: Colors.grey[200],
+        ),
+        child: Image.asset(
+          imagePath,
+          height: 40,
+        ),
       ),
     );
   }

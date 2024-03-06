@@ -7,7 +7,7 @@ extension DateExtension on DateTime {
   }
 
   String get getEndDate {
-    DateFormat transactionDateFormat = DateFormat('dd MMM yyyy');
+    DateFormat transactionDateFormat = DateFormat('dd MMM');
     return transactionDateFormat.format(this);
   }
 }

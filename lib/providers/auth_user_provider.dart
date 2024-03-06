@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class AuthProvider with ChangeNotifier {
+class AuthUserProvider with ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
+
   bool _isLoggedIn = false;
 
   bool get isLoggedIn => _isLoggedIn;
@@ -21,6 +23,13 @@ class AuthProvider with ChangeNotifier {
     await storage.delete(key: 'accessToken');
     await storage.delete(key: 'refreshToken');
     _isLoggedIn = false;
+    notifyListeners();
+  }
+
+  Future<void> saveUserInfo(User user) async {
+    await storage.write(key: 'userEmail', value: user.email);
+    await storage.write(key: 'displayName', value: user.displayName);
+    _isLoggedIn = true;
     notifyListeners();
   }
 }

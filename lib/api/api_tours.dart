@@ -22,7 +22,7 @@ class ApiTours {
         ),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         Map<String, dynamic> data = response.data;
         List<dynamic> tours = data['data'];
 
@@ -37,6 +37,9 @@ class ApiTours {
             }
           }
         }
+
+        // print(vehicles);
+        // print(tours);
 
         return tours.map((tour) => TourModel.fromJson(tour)).toList();
       } else {

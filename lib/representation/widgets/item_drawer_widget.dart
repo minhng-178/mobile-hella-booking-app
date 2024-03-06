@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
-import 'package:travo_app/providers/auth_provider.dart';
+import 'package:travo_app/providers/auth_user_provider.dart';
 import 'package:travo_app/representation/screens/login_screen.dart';
 
 class ItemDrawer extends StatelessWidget {
@@ -62,7 +62,7 @@ class ItemDrawer extends StatelessWidget {
             title: Text('Logout'),
             onTap: () async {
               final authProvider =
-                  Provider.of<AuthProvider>(context, listen: false);
+                  Provider.of<AuthUserProvider>(context, listen: false);
 
               final navigator = Navigator.of(context);
               await authProvider.signOut();

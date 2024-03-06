@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
 import 'package:travo_app/models/location_in_tour_model.dart';

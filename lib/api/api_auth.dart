@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travo_app/core/constants/api_constants.dart';
-import 'package:travo_app/providers/auth_provider.dart';
+import 'package:travo_app/providers/auth_user_provider.dart';
 import 'package:travo_app/representation/screens/login_screen.dart';
 import 'package:travo_app/representation/screens/main_app.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -18,7 +18,7 @@ class ApiAuth {
 
   Future<void> signIn(String email, String password,
       GlobalKey<FormState> formKey, BuildContext context) async {
-    final userProvider = Provider.of<AuthProvider>(context, listen: false);
+    final userProvider = Provider.of<AuthUserProvider>(context, listen: false);
     final navigator = Navigator.of(context);
     final snackBar = ScaffoldMessenger.of(context);
 
@@ -42,7 +42,7 @@ class ApiAuth {
           ),
         );
 
-        if (response.statusCode == 201) {
+        if (response.statusCode == 200) {
           log('User logged in successfully');
           NotificationService().showNotification(
               title: 'Login Success!', body: 'Glad to see you again!');
@@ -65,7 +65,8 @@ class ApiAuth {
           snackBar.showSnackBar(
             SnackBar(
                 content:
-                    Text('Failed to log in user: ${errorResponse['message']}'),  backgroundColor: Colors.red),
+                    Text('Failed to log in user: ${errorResponse['message']}'),
+                backgroundColor: Colors.red),
           );
         }
       } catch (e) {

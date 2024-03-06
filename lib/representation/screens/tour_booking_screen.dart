@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:travo_app/core/extensions/date_ext.dart';
 
+import 'package:travo_app/api/api_trips.dart';
+import 'package:travo_app/api/api_tourguide.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
@@ -10,12 +12,11 @@ import 'package:travo_app/core/helpers/generate_end_date.dart';
 import 'package:travo_app/models/location_in_tour_model.dart';
 import 'package:travo_app/models/tourguide_model.dart';
 import 'package:travo_app/providers/dialog_provider.dart';
-import 'package:travo_app/representation/screens/checkout_screen.dart';
-import 'package:travo_app/representation/services/notifi_service.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
 import 'package:travo_app/representation/widgets/item_change_guide.dart';
 import 'package:travo_app/representation/widgets/item_change_tourist.dart';
+import 'package:travo_app/representation/widgets/item_elevated_button.dart';
 import 'package:travo_app/representation/widgets/item_options_booking.dart.dart';
 
 class TourBookingScreen extends StatefulWidget {
@@ -30,12 +31,27 @@ class TourBookingScreen extends StatefulWidget {
 }
 
 class _TourBookingScreenState extends State<TourBookingScreen> {
-  String? selectDate;
+  String? selectStartDate;
+  String? selectEndDate;
   String? totalCustomer;
   TourGuideModel? selectedGuide;
 
+  void handleCreateTrip() async {
+    ApiTrips apiTrips = ApiTrips();
+    apiTrips.createNewTrip(
+      widget.tourModel.id,
+      int.parse(totalCustomer!),
+      selectStartDate!,
+      selectEndDate!,
+      selectedGuide!.id,
+      context,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    ApiTourguides apiTourguides = ApiTourguides();
+
     return AppBarContainerWidget(
       titleString: 'Tour Booking',
       implementTraling: true,
@@ -53,7 +69,7 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
             ),
             ItemOptionsBookingWidget(
               title: 'Select Date',
-              value: selectDate ?? 'Select date',
+              value: selectStartDate ?? 'Select date',
               icon: AssetHelper.icoCalendal,
               onTap: () async {
                 final result = await showModalBottomSheet<DateTime?>(
@@ -83,41 +99,52 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                             }
                           },
                         ),
-                        ItemButtonWidget(
-                          data: 'Select',
-                          onTap: () {
-                            if (selectedDate == null) {
-                              Provider.of<DialogProvider>(context,
-                                      listen: false)
-                                  .showDialog(
-                                'error',
-                                'Error',
-                                'Please select a date.',
-                                context,
-                              );
-                            } else if (selectedDate!.isBefore(DateTime.now())) {
-                              Provider.of<DialogProvider>(context,
-                                      listen: false)
-                                  .showDialog(
-                                'error',
-                                'Error',
-                                'The selected date cannot be today or a past date.',
-                                context,
-                              );
-                            } else {
-                              Navigator.of(context).pop(selectedDate);
-                            }
-                          },
-                        ),
-                        SizedBox(
-                          height: kDefaultPadding,
-                        ),
-                        ItemButtonWidget(
-                          data: 'Cancel',
-                          color: ColorPalette.primaryColor.withOpacity(0.1),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: ItemElevatedButton(
+                                title: 'Cancel',
+                                variant: ButtonVariant.secondary,
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: kDefaultPadding,
+                            ),
+                            Expanded(
+                              child: ItemElevatedButton(
+                                variant: ButtonVariant.primary,
+                                title: 'Select',
+                                onPressed: () {
+                                  if (selectedDate == null) {
+                                    Provider.of<DialogProvider>(context,
+                                            listen: false)
+                                        .showDialog(
+                                      'error',
+                                      'Error',
+                                      'Please select a date.',
+                                      context,
+                                    );
+                                  } else if (selectedDate!
+                                      .isBefore(DateTime.now())) {
+                                    Provider.of<DialogProvider>(context,
+                                            listen: false)
+                                        .showDialog(
+                                      'error',
+                                      'Error',
+                                      'The selected date cannot be today or a past date.',
+                                      context,
+                                    );
+                                  } else {
+                                    Navigator.of(context).pop(selectedDate);
+                                  }
+                                },
+                              ),
+                            )
+                          ],
                         ),
                       ],
                     );
@@ -125,12 +152,13 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                 );
                 if (result is DateTime) {
                   setState(() {
-                    selectDate = result.getStartDate;
+                    selectStartDate = result.getStartDate;
                     DateTime endDate = calculateEndDate(
                         result,
                         widget.tourModel
                             .duration); // Replace with actual duration
-                    print('End Date: $endDate');
+                    selectEndDate = endDate.getEndDate;
+                    print("$selectStartDate  - $selectEndDate");
                   });
                 }
               },
@@ -141,7 +169,7 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
               icon: AssetHelper.icoCustomers,
               onTap: () async {
                 int adults = 1;
-                int kids = 1;
+                // int kids = 1;
                 final result = await showDialog<List<int>>(
                   context: context,
                   builder: (BuildContext context) {
@@ -167,23 +195,35 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                           //     kids = newNumber;
                           //   },
                           // ),
+
                           SizedBox(
                             height: kDefaultPadding,
                           ),
-                          ItemButtonWidget(
-                            data: 'Select',
-                            onTap: () {
-                              Navigator.of(context).pop([adults]);
-                            },
-                          ),
-                          SizedBox(
-                            height: kDefaultPadding,
-                          ),
-                          ItemButtonWidget(
-                            data: 'Cancel',
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: ItemElevatedButton(
+                                  variant: ButtonVariant.secondary,
+                                  title: 'Cancel',
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: kDefaultPadding,
+                              ),
+                              Expanded(
+                                child: ItemElevatedButton(
+                                  variant: ButtonVariant.primary,
+                                  title: 'Select',
+                                  onPressed: () {
+                                    Navigator.of(context).pop([adults]);
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -193,7 +233,7 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                 if (result is List<int>) {
                   setState(() {
                     adults = result[0];
-                    kids = result[1];
+                    // kids = result[1];
                     totalCustomer = '${result[0]} Adults';
                   });
                 }
@@ -201,7 +241,7 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
             ),
             ItemOptionsBookingWidget(
               title: 'Tour Guide',
-              value: selectedGuide?.name ?? 'Select a guide',
+              value: selectedGuide?.user.fullName ?? 'Select a guide',
               icon: AssetHelper.icoTourguide,
               onTap: () async {
                 final result = await showDialog<TourGuideModel>(
@@ -213,26 +253,36 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          ItemChangeGuide(
-                            guide: TourGuideModel(
-                              name: 'John Doe',
-                              avatarUrl:
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUKbV4ZCrVOwTMkfnN10Mfhwp7BSiVb64BzDuE_lA9w&s',
-                              languages: ['English', 'Spanish'],
-                            ),
-                            onSelected: (TourGuideModel selectedGuide) {
-                              Navigator.of(context).pop(selectedGuide);
-                            },
-                          ),
-                          ItemChangeGuide(
-                            guide: TourGuideModel(
-                              name: 'Jane Smith',
-                              avatarUrl:
-                                  'https://avatar.iran.liara.run/public/92',
-                              languages: ['English', 'French', 'German'],
-                            ),
-                            onSelected: (TourGuideModel selectedGuide) {
-                              Navigator.of(context).pop(selectedGuide);
+                          FutureBuilder<List<TourGuideModel>>(
+                            future: apiTourguides.getAllTourguides(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return SingleChildScrollView(
+                                  child: Column(
+                                      children: snapshot.data!
+                                          .map((e) => ItemChangeGuide(
+                                                tourguideModel: e,
+                                                onSelected: (TourGuideModel?
+                                                    selectedGuide) {
+                                                  Navigator.of(context)
+                                                      .pop(selectedGuide);
+                                                },
+                                              ))
+                                          .toList()),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                  child: Text(
+                                    snapshot.error.toString(),
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                );
+                              }
+                              // ? By default show a loading spinner.
+                              return Center(
+                                  child: const CircularProgressIndicator(
+                                color: ColorPalette.primaryColor,
+                              ));
                             },
                           ),
                         ],
@@ -274,12 +324,6 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                   );
                   return;
                 }
-
-                NotificationService().showNotification(
-                    title: 'Booking Success!',
-                    body: 'Just one more step to go!');
-
-                Navigator.of(context).pushNamed(CheckOutScreen.routeName);
               },
             ),
           ],

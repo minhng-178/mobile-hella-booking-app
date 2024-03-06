@@ -149,8 +149,18 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                     ),
                                     Text(widget.tourModel.tourType),
                                     Spacer(),
-                                    Text(
-                                      '${widget.tourModel.vehicleName} - ${widget.tourModel.vehicleCapacity}',
+                                    Row(
+                                      children: [
+                                        ImageHelper.loadFromAsset(
+                                          AssetHelper.icoVehicle,
+                                        ),
+                                        SizedBox(
+                                          width: kMinPadding,
+                                        ),
+                                        Text(
+                                          '${widget.tourModel.vehicleName} - ${widget.tourModel.vehicleCapacity}',
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -161,7 +171,7 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                 Row(
                                   children: [
                                     ImageHelper.loadFromAsset(
-                                      AssetHelper.icoStar,
+                                      AssetHelper.icoDuration,
                                     ),
                                     SizedBox(
                                       width: kMinPadding,

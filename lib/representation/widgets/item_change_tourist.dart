@@ -112,7 +112,7 @@ class _ItemChangeTouristState extends State<ItemChangeTourist> {
               });
             },
             child: ImageHelper.loadFromAsset(AssetHelper.icoIncre),
-          )
+          ),
         ]),
       );
     });

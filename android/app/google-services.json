@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "226297739088",
+    "project_id": "hellabooking-3abe3",
+    "storage_bucket": "hellabooking-3abe3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226297739088:android:c58b49dd4b5000a5ec1e55",
+        "android_client_info": {
+          "package_name": "com.example.travo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226297739088-f3r2mdpj3i8rrambnc8c7ohps0gk8l6o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.travo_app",
+            "certificate_hash": "efbe03f57946c571036a74f166bd6d04c1aee11c"
+          }
+        },
+        {
+          "client_id": "226297739088-s6f8kn1fu8p4414ridg3a6rs6uaj92d2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADBygz7HRlFWF4NmsUTDaYnV6F8n1KUko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226297739088-s6f8kn1fu8p4414ridg3a6rs6uaj92d2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "226297739088-9qk888dek3731l9vpm768htsjkpkupvv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.travoApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

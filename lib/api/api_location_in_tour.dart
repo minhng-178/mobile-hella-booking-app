@@ -1,6 +1,6 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
+
 import 'package:travo_app/api/api_locations.dart';
 import 'package:travo_app/api/api_tours.dart';
 import 'package:travo_app/core/constants/api_constants.dart';
@@ -17,7 +17,7 @@ class ApiLocationsInTours {
   Future<List<LocationInTourModel>> getAllLocationsInTour() async {
     try {
       Response response = await _dio.get(
-        '$_baseUrl/locationInTours',
+        '$_baseUrl/tours/locations',
         options: Options(
           headers: {
             "Content-type": "application/json",
@@ -25,7 +25,7 @@ class ApiLocationsInTours {
         ),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         Map<String, dynamic> data = response.data;
         List<dynamic> locationsinTours = data['data'];
 

@@ -1,6 +1,11 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+
 import 'package:travo_app/api/api_auth.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
+import 'package:travo_app/providers/auth_user_provider.dart';
 import 'package:travo_app/representation/screens/register_screen.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
@@ -17,6 +22,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.authStateChanges().listen((event) {
+      setState(() {
+        _user = event;
+      });
+    });
+  }
+
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -31,6 +50,33 @@ class _LoginScreenState extends State<LoginScreen> {
           .signIn(
               emailController.text, passwordController.text, _formKey, context)
           .then((_) => apiAuth.checkTokens());
+    }
+  }
+
+  void signUserInWithGoogle() {
+    final userProvider = Provider.of<AuthUserProvider>(context, listen: false);
+    try {
+      GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+      _auth.signInWithProvider(googleAuthProvider).then((_) => printUserInfo());
+    } catch (e) {
+      log('$e');
+    }
+  }
+
+  void handleLogout() {
+    _auth.signOut().then((_) => printUserInfo());
+  }
+
+  void printUserInfo() {
+    if (_user != null) {
+      log('$_user');
+
+      // log('Refresh Token: ${_user!.refreshToken}');
+      // log('User ID: ${_user!.uid}');
+      // log('Email: ${_user!.email}');
+      // log('Display Name: ${_user!.displayName}');
+    } else {
+      log('No user is currently signed in.');
     }
   }
 
@@ -129,14 +175,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 // google + apple sign in buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     // google button
-                    ItemSquareTitle(imagePath: AssetHelper.google),
+                    ItemSquareTitle(
+                      imagePath: AssetHelper.google,
+                      onTap: signUserInWithGoogle,
+                    ),
 
                     SizedBox(width: 25),
 
                     // apple button
-                    ItemSquareTitle(imagePath: AssetHelper.apple)
+                    ItemSquareTitle(
+                      imagePath: AssetHelper.apple,
+                      onTap: handleLogout,
+                    )
                   ],
                 ),
 

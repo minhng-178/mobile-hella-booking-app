@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:travo_app/api/api_location_in_tour.dart';
 
+import 'package:travo_app/api/api_location_in_tour.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/models/location_in_tour_model.dart';
 import 'package:travo_app/representation/screens/detail_tour_screen.dart';
@@ -57,7 +57,7 @@ class _ToursScreenState extends State<ToursScreen> {
                 ),
               );
             }
-            // By default show a loading spinner.
+            // ? By default show a loading spinner.
             return Center(
                 child: const CircularProgressIndicator(
               color: ColorPalette.primaryColor,
