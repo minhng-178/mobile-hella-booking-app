@@ -50,4 +50,7 @@ mixin AssetHelper {
   static const String dubai = 'assets/images/dubai.png';
   static const String google = 'assets/images/google.png';
   static const String apple = 'assets/images/apple.png';
+  static const String napas = 'assets/images/napas.png';
+  static const String visa = 'assets/images/visa.png';
+  static const String success = 'assets/images/success.gif';
 }

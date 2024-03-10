@@ -1,13 +1,13 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:travo_app/core/helpers/size_config.dart';
-import 'package:travo_app/firebase_options.dart';
-import 'package:travo_app/routes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-import 'package:travo_app/providers/auth_user_provider.dart';
+import 'package:travo_app/routes.dart';
+import 'package:travo_app/firebase_options.dart';
+import 'package:travo_app/core/helpers/size_config.dart';
 import 'package:travo_app/providers/dialog_provider.dart';
+import 'package:travo_app/providers/auth_user_provider.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/helpers/local_storage_helper.dart';
 import 'package:travo_app/representation/screens/error_screen.dart';

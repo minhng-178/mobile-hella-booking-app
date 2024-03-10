@@ -106,7 +106,7 @@ class ItemTourWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '\$${tourModel.price.toString()}',
+                        '${tourModel.price.toString()}VND',
                         style: TextStyles.defaultStyle.fontHeader.bold,
                       ),
                       SizedBox(height: kMinPadding),

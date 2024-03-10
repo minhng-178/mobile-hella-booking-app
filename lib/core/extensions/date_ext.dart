@@ -11,3 +11,24 @@ extension DateExtension on DateTime {
     return transactionDateFormat.format(this);
   }
 }
+
+String formatDateTime(String? date) {
+  DateTime parsedDate;
+
+  if (date != null) {
+    parsedDate = DateFormat('dd MMM').parse(date);
+    parsedDate =
+        DateTime(DateTime.now().year, parsedDate.month, parsedDate.day);
+  } else {
+    parsedDate = DateTime.now();
+  }
+
+  return DateFormat('yyyy-MM-ddTHH:mm:ss.sssZ').format(parsedDate);
+}
+
+DateTime parseDate(String? dateString) {
+  if (dateString == null) {
+    return DateTime.now();
+  }
+  return DateTime.parse(dateString);
+}

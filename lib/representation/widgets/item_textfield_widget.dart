@@ -9,7 +9,7 @@ class ItemTextField extends StatelessWidget {
 
   const ItemTextField(
       {super.key,
-      required this.controller,
+      this.controller,
       required this.hintText,
       required this.obscureText,
       this.validator});

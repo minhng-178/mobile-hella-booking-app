@@ -51,8 +51,13 @@ class ApiAuth {
           var jsonResponse = response.data;
           var accessToken = jsonResponse['token']['accessToken'];
           var refreshToken = jsonResponse['token']['refreshToken'];
+          var userId = jsonResponse['userData']['id'];
+          var userRole = jsonResponse['userData']['role'].toString();
+
           await storage.write(key: 'accessToken', value: accessToken);
           await storage.write(key: 'refreshToken', value: refreshToken);
+          await storage.write(key: 'userId', value: userId);
+          await storage.write(key: 'userRole', value: userRole);
 
           userProvider.isLoggedIn = refreshToken != null;
 
@@ -115,7 +120,7 @@ class ApiAuth {
           ),
         );
 
-        if (response.statusCode == 200) {
+        if (response.statusCode == 201) {
           log('User signed up successfully');
           NotificationService().showNotification(
               title: 'Register Success!', body: 'Welcome to our app!');
@@ -171,6 +176,38 @@ class ApiAuth {
       await storage.write(key: 'accessToken', value: newAccessToken);
     } else {
       // Handle error...
+    }
+  }
+
+  Future<String?> getBearer() async {
+    String? accessToken = await storage.read(key: 'accessToken');
+    String? refreshToken = await storage.read(key: 'refreshToken');
+    return accessToken != null && refreshToken != null
+        ? '$accessToken:$refreshToken'
+        : null;
+  }
+
+  Future<String?> getUserIdFromLocal() async {
+    String? userId = await storage.read(key: 'userId');
+
+    return userId;
+  }
+
+  Future<void> verifyTokenGoogle(String? accessToken) async {
+    try {
+      Response response = await _dio.post(
+        '$_baseUrl/Firebase/verifyGoogle',
+        data: {'authToken': accessToken},
+        options: Options(
+          headers: {
+            "Content-type": "application/json",
+          },
+        ),
+      );
+
+      log('$response');
+    } catch (e) {
+      throw Exception('Invalid Google Token!');
     }
   }
 }

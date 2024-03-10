@@ -38,9 +38,6 @@ class ApiTours {
           }
         }
 
-        // print(vehicles);
-        // print(tours);
-
         return tours.map((tour) => TourModel.fromJson(tour)).toList();
       } else {
         return [];
@@ -48,6 +45,30 @@ class ApiTours {
     } catch (e) {
       log('Failed to load tours: $e');
       throw Exception('Oops! Something when wrong please wait...');
+    }
+  }
+
+  Future<TourModel?> getTourById(int tourId) async {
+    try {
+      final response = await _dio.get(
+        '$_baseUrl/tours/$tourId',
+        options: Options(
+          headers: {
+            "Content-type": "application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> tourData = response.data;
+
+        return TourModel.fromJson(tourData['data']);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      log('Failed to load tour: $e');
+      throw Exception('Oops! Something went wrong. Please wait...');
     }
   }
 }

@@ -1,16 +1,14 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
 
 import 'package:travo_app/api/api_auth.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
-import 'package:travo_app/providers/auth_user_provider.dart';
 import 'package:travo_app/representation/screens/register_screen.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
 import 'package:travo_app/representation/widgets/item_square_title_widget.dart';
 import 'package:travo_app/representation/widgets/item_textfield_widget.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,20 +20,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  User? _user;
-
-  @override
-  void initState() {
-    super.initState();
-    _auth.authStateChanges().listen((event) {
-      setState(() {
-        _user = event;
-      });
-    });
-  }
-
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -53,31 +37,31 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void signUserInWithGoogle() {
-    final userProvider = Provider.of<AuthUserProvider>(context, listen: false);
-    try {
-      GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
-      _auth.signInWithProvider(googleAuthProvider).then((_) => printUserInfo());
-    } catch (e) {
-      log('$e');
-    }
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    ApiAuth apiAuth = ApiAuth();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Store the accessToken in a variable
+    final String? accessToken = googleAuth?.accessToken;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    final UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    apiAuth.verifyTokenGoogle(accessToken);
+
+    return userCredential;
   }
 
-  void handleLogout() {
-    _auth.signOut().then((_) => printUserInfo());
-  }
-
-  void printUserInfo() {
-    if (_user != null) {
-      log('$_user');
-
-      // log('Refresh Token: ${_user!.refreshToken}');
-      // log('User ID: ${_user!.uid}');
-      // log('Email: ${_user!.email}');
-      // log('Display Name: ${_user!.displayName}');
-    } else {
-      log('No user is currently signed in.');
-    }
+  Future<void> signOutGoogle() async {
+    await GoogleSignIn().signOut();
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -179,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // google button
                     ItemSquareTitle(
                       imagePath: AssetHelper.google,
-                      onTap: signUserInWithGoogle,
+                      onTap: signInWithGoogle,
                     ),
 
                     SizedBox(width: 25),
@@ -187,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // apple button
                     ItemSquareTitle(
                       imagePath: AssetHelper.apple,
-                      onTap: handleLogout,
+                      onTap: signOutGoogle,
                     )
                   ],
                 ),

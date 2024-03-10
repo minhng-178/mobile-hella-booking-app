@@ -3,7 +3,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:travo_app/api/api_auth.dart';
+
 import 'package:travo_app/core/constants/api_constants.dart';
 import 'package:travo_app/models/trip_model.dart';
 import 'package:travo_app/representation/screens/checkout_screen.dart';
@@ -11,6 +12,7 @@ import 'package:travo_app/representation/services/notifi_service.dart';
 
 class ApiTrips {
   final Dio _dio = Dio();
+  final ApiAuth _apiAuth = ApiAuth();
   final String _baseUrl = baseUrl;
 
   Future<List<TripModel>> getAllTrips() async {
@@ -38,46 +40,56 @@ class ApiTrips {
     }
   }
 
-  Future<void> createNewTrip(int tourId, int totalCustomer, String startDate,
-      String endDate, String tourGuideId, BuildContext context) async {
-    final navigator = Navigator.of(context);
+  Future<TripModel?> createNewTrip(
+      int tourId,
+      int totalCustomer,
+      String startDate,
+      String endDate,
+      String tourGuideId,
+      BuildContext context) async {
     final snackBar = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
 
-    // Parse the date strings into DateTime objects
-    DateTime parsedStartDate = DateFormat('dd MMM').parse(startDate);
-    DateTime parsedEndDate = DateFormat('dd MMM').parse(endDate);
-
-    // Format the DateTime objects to the desired format
-    String formattedStartDate =
-        DateFormat('yyyy-MM-ddTHH:mm:ss.sssZ').format(parsedStartDate);
-    String formattedEndDate =
-        DateFormat('yyyy-MM-ddTHH:mm:ss.sssZ').format(parsedEndDate);
+    var tripData = {
+      'tourId': tourId,
+      'totalCustomer': totalCustomer,
+      'startDate': startDate,
+      'endDate': endDate,
+      'status': true,
+      'tourGuideId': tourGuideId,
+    };
 
     try {
+      String? bearer = await _apiAuth.getBearer();
+
       Response response = await _dio.post(
         "$_baseUrl/trips",
-        data: {
-          'tourId': tourId,
-          'totalCustomer': totalCustomer,
-          'startDate': formattedStartDate,
-          'endDate': formattedEndDate,
-          'tourGuideId': tourGuideId,
-        },
+        data: tripData,
         options: Options(
           headers: {
             "Content-type": "application/json",
+            "Authorization": "Bearer $bearer",
           },
         ),
       );
 
       if (response.statusCode == 200) {
         log('Trip created successfully');
+
+        Map<String, dynamic> data = response.data;
+
+        TripModel createdTrip = TripModel.fromJson(data['data']);
         NotificationService().showNotification(
-            title: 'Booking Success!', body: 'Just one more step to go!');
-        navigator.pushNamed(CheckOutScreen.routeName);
+            title: 'Success!',
+            body: 'Let take a look at your booking details.');
+        navigator.pushNamed(
+          CheckOutScreen.routeName,
+          arguments: createdTrip,
+        );
+        return createdTrip;
       } else {
-        log('Failed to create trip');
         var errorResponse = json.decode(response.data);
+        log('Failed to create trip');
         log('Server error: ${errorResponse['message']}');
         snackBar.showSnackBar(SnackBar(
           content: Text("Failed to create trip"),
@@ -85,11 +97,13 @@ class ApiTrips {
         ));
       }
     } catch (e) {
-      log('Server error: $e');
+      log('Server error in the catch: $e');
       snackBar.showSnackBar(SnackBar(
         content: Text("Failed to create trip"),
         backgroundColor: Colors.red,
       ));
     }
+
+    return null;
   }
 }

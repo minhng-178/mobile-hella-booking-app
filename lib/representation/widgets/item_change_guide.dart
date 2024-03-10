@@ -18,8 +18,6 @@ class _ItemChangeGuideState extends State<ItemChangeGuide> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.tourguideModel);
-
     return GestureDetector(
       onTap: () {
         setState(() {

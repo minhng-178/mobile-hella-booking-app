@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:travo_app/models/booking_model.dart';
 import 'package:travo_app/models/location_in_tour_model.dart';
+import 'package:travo_app/models/trip_model.dart';
 import 'package:travo_app/representation/screens/checkout_screen.dart';
 import 'package:travo_app/representation/screens/comming_soon_screen.dart';
 import 'package:travo_app/representation/screens/detail_tour_screen.dart';
 import 'package:travo_app/representation/screens/intro_screen.dart';
 import 'package:travo_app/representation/screens/login_screen.dart';
 import 'package:travo_app/representation/screens/main_app.dart';
+import 'package:travo_app/representation/screens/payment_method_screen.dart';
+import 'package:travo_app/representation/screens/payment_success.dart';
 import 'package:travo_app/representation/screens/register_screen.dart';
 import 'package:travo_app/representation/screens/splash_screen.dart.dart';
 import 'package:travo_app/representation/screens/tour_booking_screen.dart';
@@ -19,7 +23,7 @@ final Map<String, WidgetBuilder> routes = {
   RegisterScreen.routeName: (context) => const RegisterScreen(),
   ToursScreen.routeName: (context) => const ToursScreen(),
   CommingsoonScreen.routeName: (context) => const CommingsoonScreen(),
-  CheckOutScreen.routeName: (context) => CheckOutScreen(),
+  PaymentSuccessScreen.routeName: (context) => const PaymentSuccessScreen(),
 };
 
 MaterialPageRoute<dynamic>? generateRoutes(RouteSettings settings) {
@@ -44,14 +48,21 @@ MaterialPageRoute<dynamic>? generateRoutes(RouteSettings settings) {
         ),
       );
 
-    // case CheckOutScreen.routeName:
-    //   final RoomModel roomModel = (settings.arguments as RoomModel);
-    //   return MaterialPageRoute<dynamic>(
-    //     settings: settings,
-    //     builder: (context) => CheckOutScreen(
-    //       roomModel: roomModel,
-    //     ),
-    //   );
+    case CheckOutScreen.routeName:
+      final TripModel tripModel = (settings.arguments as TripModel);
+      return MaterialPageRoute<dynamic>(
+        settings: settings,
+        builder: (context) => CheckOutScreen(
+          tripModel: tripModel,
+        ),
+      );
+
+    case PaymentMethodScreen.routeName:
+      final BookingModel bookingModel = (settings.arguments as BookingModel);
+      return MaterialPageRoute<dynamic>(
+        settings: settings,
+        builder: (context) => PaymentMethodScreen(bookingModel: bookingModel),
+      );
 
     default:
       return null;

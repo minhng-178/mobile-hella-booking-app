@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:travo_app/core/extensions/date_ext.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import 'package:travo_app/api/api_trips.dart';
 import 'package:travo_app/api/api_tourguide.dart';
-import 'package:travo_app/core/helpers/asset_helper.dart';
-import 'package:travo_app/core/constants/color_palette.dart';
-import 'package:travo_app/core/constants/dimension_constants.dart';
-import 'package:travo_app/core/helpers/generate_end_date.dart';
-import 'package:travo_app/models/location_in_tour_model.dart';
 import 'package:travo_app/models/tourguide_model.dart';
 import 'package:travo_app/providers/dialog_provider.dart';
+import 'package:travo_app/core/helpers/asset_helper.dart';
+import 'package:travo_app/core/constants/color_palette.dart';
+import 'package:travo_app/models/location_in_tour_model.dart';
+import 'package:travo_app/core/helpers/generate_end_date.dart';
+import 'package:travo_app/core/constants/dimension_constants.dart';
+import 'package:travo_app/representation/widgets/item_change_guide.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
-import 'package:travo_app/representation/widgets/item_change_guide.dart';
 import 'package:travo_app/representation/widgets/item_change_tourist.dart';
 import 'package:travo_app/representation/widgets/item_elevated_button.dart';
 import 'package:travo_app/representation/widgets/item_options_booking.dart.dart';
@@ -38,14 +39,28 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
 
   void handleCreateTrip() async {
     ApiTrips apiTrips = ApiTrips();
-    apiTrips.createNewTrip(
-      widget.tourModel.id,
-      int.parse(totalCustomer!),
-      selectStartDate!,
-      selectEndDate!,
-      selectedGuide!.id,
-      context,
-    );
+
+    var match = RegExp(r'\d+').firstMatch(totalCustomer!);
+    if (match == null) {
+      return;
+    }
+
+    int numberOfCustomers = int.parse(match.group(0)!);
+
+    if (selectStartDate != null && selectEndDate != null) {
+      String formattedStartDate = formatDateTime(selectStartDate);
+      String formattedEndDate = formatDateTime(selectEndDate);
+
+      apiTrips.createNewTrip(
+          widget.tourModel.tourId,
+          numberOfCustomers,
+          formattedStartDate,
+          formattedEndDate,
+          selectedGuide?.id ?? '',
+          context);
+    } else {
+      return;
+    }
   }
 
   @override
@@ -153,12 +168,9 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                 if (result is DateTime) {
                   setState(() {
                     selectStartDate = result.getStartDate;
-                    DateTime endDate = calculateEndDate(
-                        result,
-                        widget.tourModel
-                            .duration); // Replace with actual duration
+                    DateTime endDate =
+                        calculateEndDate(result, widget.tourModel.duration);
                     selectEndDate = endDate.getEndDate;
-                    print("$selectStartDate  - $selectEndDate");
                   });
                 }
               },
@@ -169,7 +181,6 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
               icon: AssetHelper.icoCustomers,
               onTap: () async {
                 int adults = 1;
-                // int kids = 1;
                 final result = await showDialog<List<int>>(
                   context: context,
                   builder: (BuildContext context) {
@@ -187,15 +198,6 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                               adults = newNumber;
                             },
                           ),
-                          // ItemChangeTourist(
-                          //   initData: kids,
-                          //   icon: AssetHelper.icoRoom,
-                          //   value: 'Kids',
-                          //   onNumberChanged: (int newNumber) {
-                          //     kids = newNumber;
-                          //   },
-                          // ),
-
                           SizedBox(
                             height: kDefaultPadding,
                           ),
@@ -233,7 +235,6 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                 if (result is List<int>) {
                   setState(() {
                     adults = result[0];
-                    // kids = result[1];
                     totalCustomer = '${result[0]} Adults';
                   });
                 }
@@ -303,6 +304,16 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
             ItemButtonWidget(
               data: 'Submit',
               onTap: () {
+                if (selectStartDate == null) {
+                  Provider.of<DialogProvider>(context, listen: false)
+                      .showDialog(
+                    'error',
+                    'Error',
+                    'Please select a date.',
+                    context,
+                  );
+                }
+
                 if (totalCustomer == null) {
                   Provider.of<DialogProvider>(context, listen: false)
                       .showDialog(
@@ -324,6 +335,8 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
                   );
                   return;
                 }
+
+                handleCreateTrip();
               },
             ),
           ],

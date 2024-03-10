@@ -125,9 +125,9 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                     ),
                                     Spacer(),
                                     Text(
-                                      '\$${widget.tourModel.price.toString()}',
-                                      style: TextStyles
-                                          .defaultStyle.fontHeader.bold,
+                                      '${widget.tourModel.price.toString()}VND',
+                                      style:
+                                          TextStyles.defaultStyle.fontCaption,
                                     ),
                                     Text(
                                       ' /person',

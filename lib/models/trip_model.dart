@@ -5,7 +5,7 @@ class TripModel {
   final DateTime startDate;
   final DateTime endDate;
   final bool status;
-  final int tourGuideId;
+  final String tourGuideId;
 
   TripModel({
     required this.id,

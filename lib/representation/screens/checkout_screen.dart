@@ -1,29 +1,74 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:travo_app/api/api_bookings.dart';
+
+import 'package:travo_app/api/api_tours.dart';
+import 'package:travo_app/models/trip_model.dart';
+import 'package:travo_app/models/tour_model.dart';
+import 'package:travo_app/core/helpers/size_config.dart';
+import 'package:travo_app/core/helpers/asset_helper.dart';
+import 'package:travo_app/core/helpers/image_helper.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
-import 'package:travo_app/core/helpers/asset_helper.dart';
-import 'package:travo_app/core/helpers/image_helper.dart';
-import 'package:travo_app/core/helpers/size_config.dart';
-import 'package:travo_app/representation/screens/main_app.dart';
+import 'package:travo_app/representation/widgets/item_trip_widget.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
 
 class CheckOutScreen extends StatefulWidget {
-  const CheckOutScreen({super.key});
+  const CheckOutScreen({
+    super.key,
+    required this.tripModel,
+  });
 
   static const String routeName = '/checkout_screen';
+
+  final TripModel tripModel;
 
   @override
   State<CheckOutScreen> createState() => _CheckOutScreenState();
 }
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
+  TourModel? _selectedTour;
+
+  void _handleCreateBooking() async {
+    ApiBooking apiBooking = ApiBooking();
+
+    DateTime bookingDate = DateTime.now();
+    String formatedBookingDate = bookingDate.toIso8601String();
+    double totalAmount =
+        (_selectedTour?.price ?? 0) * widget.tripModel.totalCustomer;
+
+    apiBooking.createNewBooking(formatedBookingDate, totalAmount,
+        widget.tripModel.id, widget.tripModel.totalCustomer, context);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTourDetails();
+  }
+
   final List<String> steps = [
     'Book and Review',
     'Payment',
     'Confirm',
   ];
+  int currentStep = 0;
+
+  Future<void> _fetchTourDetails() async {
+    ApiTours apiTours = ApiTours();
+    try {
+      final TourModel? tour =
+          await apiTours.getTourById(widget.tripModel.tourId);
+      setState(() {
+        _selectedTour = tour;
+      });
+    } catch (e) {
+      log('Error fetching tour details: $e');
+    }
+  }
 
   Widget _buildItemOptionsCheckout(String icon, String title, String value) {
     return Container(
@@ -139,6 +184,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   Widget build(BuildContext context) {
     return AppBarContainerWidget(
       titleString: 'Checkout',
+      implementTraling: true,
       child: Column(
         children: [
           Row(
@@ -147,7 +193,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     steps.indexOf(e) + 1,
                     e,
                     steps.indexOf(e) == steps.length - 1,
-                    steps.indexOf(e) == 0))
+                    steps.indexOf(e) <= currentStep))
                 .toList(),
           ),
           SizedBox(
@@ -160,6 +206,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   SizedBox(
                     height: kMediumPadding,
                   ),
+                  ItemTripWidget(
+                      tripModel: widget.tripModel, selectedTour: _selectedTour),
                   _buildItemOptionsCheckout(
                       AssetHelper.icoUser, 'Contact Details', 'Add Contact'),
                   SizedBox(
@@ -171,10 +219,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     height: kMediumPadding,
                   ),
                   ItemButtonWidget(
-                    data: 'PayMent',
+                    data: 'Payment',
                     onTap: () {
-                      Navigator.of(context).popUntil(
-                          (route) => route.settings.name == MainApp.routeName);
+                      _handleCreateBooking();
                     },
                   ),
                   SizedBox(
