@@ -24,6 +24,6 @@ class TourGuideModel {
 
   @override
   String toString() {
-    return 'TourGuideModel: id: $id, user: $user';
+    return 'TourGuideModel: id: $id, user:';
   }
 }

@@ -19,7 +19,7 @@ class ApiLocations {
         ),
       );
 
-      if (response.statusCode == 202) {
+      if (response.statusCode == 201) {
         Map<String, dynamic> data = response.data;
         List<dynamic> locations = data['data'];
 

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+
+import 'package:travo_app/api/api_payments.dart';
+import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
-import 'package:travo_app/core/helpers/asset_helper.dart';
-import 'package:travo_app/representation/screens/main_app.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
 import 'package:travo_app/representation/widgets/item_empty_section.dart';
-import 'package:travo_app/representation/widgets/item_textfield_widget.dart';
+import 'package:travo_app/representation/widgets/item_subtitle.dart';
 
 class PaymentSuccessScreen extends StatefulWidget {
-  const PaymentSuccessScreen({super.key});
+  const PaymentSuccessScreen({super.key, required this.queryString});
 
   static const String routeName = '/payment_success_screen';
 
+  final String queryString;
   @override
   State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
 }
@@ -25,6 +27,11 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   ];
 
   int currentStep = 2;
+
+  void _handleReturnIpn() {
+    ApiPayment apiPayment = ApiPayment();
+    apiPayment.returnIpn(widget.queryString, context);
+  }
 
   Widget _buildItemCheckOutStep(
     int step,
@@ -102,15 +109,12 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                   emptyImg: AssetHelper.success,
                   emptyMsg: 'Successful !!',
                 ),
-                ItemTextField(
-                  hintText: 'Your payment was done successfully',
-                  obscureText: false,
+                ItemSubTitle(
+                  subTitleText: 'Your payment was done successfully',
                 ),
                 ItemButtonWidget(
                   data: 'Continue',
-                  onTap: () {
-                    Navigator.of(context).pushNamed(MainApp.routeName);
-                  },
+                  onTap: _handleReturnIpn,
                 ),
               ],
             ),

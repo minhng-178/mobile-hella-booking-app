@@ -6,12 +6,14 @@ class ItemDropdownLanguage extends StatelessWidget {
   final ValueChanged<String?> onChanged;
   final FormFieldValidator<String?>? validator;
 
-  const ItemDropdownLanguage({
+  ItemDropdownLanguage({
     super.key,
     required this.value,
     required this.onChanged,
     this.validator,
   });
+
+  final itemsMap = {'Vietnamese': 'vn', 'English': 'en'};
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +38,10 @@ class ItemDropdownLanguage extends StatelessWidget {
               color: Colors.grey[500],
             ),
           ),
-          items: <String>['Vietnamese', 'English']
-              .map<DropdownMenuItem<String>>((String value) {
+          items: itemsMap.entries.map<DropdownMenuItem<String>>((entry) {
             return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
+              value: entry.value,
+              child: Text(entry.key),
             );
           }).toList(),
         ));

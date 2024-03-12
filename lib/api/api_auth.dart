@@ -195,8 +195,10 @@ class ApiAuth {
 
   Future<void> verifyTokenGoogle(String? accessToken) async {
     try {
+      log('$accessToken');
+
       Response response = await _dio.post(
-        '$_baseUrl/Firebase/verifyGoogle',
+        'http://localhost:1411/api/v1/Firebase/verifyGoogle',
         data: {'authToken': accessToken},
         options: Options(
           headers: {
@@ -207,6 +209,7 @@ class ApiAuth {
 
       log('$response');
     } catch (e) {
+      log('$e');
       throw Exception('Invalid Google Token!');
     }
   }

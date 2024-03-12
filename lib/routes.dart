@@ -23,7 +23,6 @@ final Map<String, WidgetBuilder> routes = {
   RegisterScreen.routeName: (context) => const RegisterScreen(),
   ToursScreen.routeName: (context) => const ToursScreen(),
   CommingsoonScreen.routeName: (context) => const CommingsoonScreen(),
-  PaymentSuccessScreen.routeName: (context) => const PaymentSuccessScreen(),
 };
 
 MaterialPageRoute<dynamic>? generateRoutes(RouteSettings settings) {
@@ -62,6 +61,13 @@ MaterialPageRoute<dynamic>? generateRoutes(RouteSettings settings) {
       return MaterialPageRoute<dynamic>(
         settings: settings,
         builder: (context) => PaymentMethodScreen(bookingModel: bookingModel),
+      );
+
+    case PaymentSuccessScreen.routeName:
+      final String queryString = (settings.arguments as String);
+      return MaterialPageRoute<dynamic>(
+        settings: settings,
+        builder: (context) => PaymentSuccessScreen(queryString: queryString),
       );
 
     default:

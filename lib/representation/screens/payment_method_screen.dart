@@ -5,7 +5,6 @@ import 'package:travo_app/models/booking_model.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
-import 'package:travo_app/representation/screens/payment_success.dart';
 import 'package:travo_app/representation/widgets/dash_line.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
@@ -57,7 +56,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     ApiPayment apiPayment = ApiPayment();
 
     apiPayment.createPayment(
-        widget.bookingModel.id, value, language, descController.text);
+        widget.bookingModel.id, value, language, descController.text, context);
   }
 
   Widget _buildItemCheckOutStep(

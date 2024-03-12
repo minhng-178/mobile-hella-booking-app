@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
 import 'package:travo_app/models/location_in_tour_model.dart';
+import 'package:travo_app/providers/auth_user_provider.dart';
+import 'package:travo_app/providers/dialog_provider.dart';
 import 'package:travo_app/representation/screens/tour_booking_screen.dart';
 import 'package:travo_app/representation/widgets/dash_line.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
@@ -24,6 +28,8 @@ class DetailTourScreen extends StatefulWidget {
 class _DetailTourScreenState extends State<DetailTourScreen> {
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<AuthUserProvider>(context);
+    final isLoggedIn = userProvider.isLoggedIn;
     return Scaffold(
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -226,6 +232,18 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                 ItemButtonWidget(
                                     data: 'Book now',
                                     onTap: () {
+                                      if (isLoggedIn == false) {
+                                        Provider.of<DialogProvider>(context,
+                                                listen: false)
+                                            .showDialog(
+                                          'error',
+                                          'Error',
+                                          'Please login to continue booking!',
+                                          context,
+                                        );
+                                        return;
+                                      }
+
                                       Navigator.of(context).pushNamed(
                                           TourBookingScreen.routeName,
                                           arguments: widget.tourModel);

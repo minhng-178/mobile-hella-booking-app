@@ -22,7 +22,7 @@ class ApiTours {
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         Map<String, dynamic> data = response.data;
         List<dynamic> tours = data['data'];
 
