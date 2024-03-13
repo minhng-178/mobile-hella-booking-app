@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
+import 'package:travo_app/representation/screens/booked_screen.dart';
 import 'package:travo_app/representation/screens/comming_soon_screen.dart';
 import 'package:travo_app/representation/screens/home_screen.dart';
 import 'package:travo_app/representation/screens/profile_screen.dart';
@@ -25,12 +26,10 @@ class _MainAppState extends State<MainApp> {
       backgroundColor: Colors.white,
       body: IndexedStack(
         index: _currentIndex,
-        children: [
+        children: const [
           HomeScreen(),
           CommingsoonScreen(),
-          Container(
-            color: Colors.red,
-          ),
+          BookedScreen(),
           ProfileScreen()
         ],
       ),

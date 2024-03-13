@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:travo_app/models/booking_model.dart';
 import 'package:travo_app/models/location_in_tour_model.dart';
 import 'package:travo_app/models/trip_model.dart';
+import 'package:travo_app/representation/screens/booked_screen.dart';
 import 'package:travo_app/representation/screens/checkout_screen.dart';
 import 'package:travo_app/representation/screens/comming_soon_screen.dart';
 import 'package:travo_app/representation/screens/detail_tour_screen.dart';
@@ -23,6 +24,7 @@ final Map<String, WidgetBuilder> routes = {
   RegisterScreen.routeName: (context) => const RegisterScreen(),
   ToursScreen.routeName: (context) => const ToursScreen(),
   CommingsoonScreen.routeName: (context) => const CommingsoonScreen(),
+  BookedScreen.routeName: (context) => const BookedScreen(),
 };
 
 MaterialPageRoute<dynamic>? generateRoutes(RouteSettings settings) {

@@ -85,6 +85,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   Widget build(BuildContext context) {
     return AppBarContainerWidget(
       titleString: 'Payment Success',
+      implementLeading: false,
+      implementTraling: true,
       child: Column(children: [
         Row(
           children: steps

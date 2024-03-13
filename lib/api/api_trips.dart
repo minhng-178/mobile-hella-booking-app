@@ -4,9 +4,13 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:travo_app/api/api_auth.dart';
+import 'package:travo_app/api/api_tourguide.dart';
+import 'package:travo_app/api/api_tours.dart';
 
-import 'package:travo_app/core/constants/api_constants.dart';
+import 'package:travo_app/models/tour_model.dart';
+import 'package:travo_app/models/tourguide_model.dart';
 import 'package:travo_app/models/trip_model.dart';
+import 'package:travo_app/core/constants/api_constants.dart';
 import 'package:travo_app/representation/screens/checkout_screen.dart';
 import 'package:travo_app/representation/services/notifi_service.dart';
 
@@ -14,6 +18,8 @@ class ApiTrips {
   final Dio _dio = Dio();
   final ApiAuth _apiAuth = ApiAuth();
   final String _baseUrl = baseUrl;
+  final ApiTours _apiTours = ApiTours();
+  final ApiTourguides _apiTourGuide = ApiTourguides();
 
   Future<List<TripModel>> getAllTrips() async {
     try {
@@ -29,6 +35,51 @@ class ApiTrips {
       if (response.statusCode == 201) {
         Map<String, dynamic> data = response.data;
         List<dynamic> trips = data['data'];
+
+        return trips.map((trip) => TripModel.fromJson(trip)).toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      log('Failed to load trips: $e');
+      throw Exception('Oops! Something when wrong please wait...');
+    }
+  }
+
+  Future<List<TripModel>> getTripsWithTourAndTourguide() async {
+    try {
+      Response response = await _dio.get(
+        '$_baseUrl/trips',
+        options: Options(
+          headers: {
+            "Content-type": "application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 201) {
+        Map<String, dynamic> data = response.data;
+        List<dynamic> trips = data['data'];
+
+        List<TourModel> tours = await _apiTours.getAllTours();
+        List<TourGuideModel> tourguides =
+            await _apiTourGuide.getAllTourguides();
+
+        for (var trip in trips) {
+          for (var tour in tours) {
+            if (trip['tourId'] == tour.id) {
+              trip['tourName'] = tour.tourName;
+              break;
+            }
+          }
+
+          for (var tourguide in tourguides) {
+            if (trip['tourGuideId'] == tourguide.id) {
+              trip['tourguideName'] = tourguide.user.fullName;
+              break;
+            }
+          }
+        }
 
         return trips.map((trip) => TripModel.fromJson(trip)).toList();
       } else {

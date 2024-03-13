@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import 'package:travo_app/api/api_auth.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
+import 'package:travo_app/providers/auth_user_provider.dart';
 import 'package:travo_app/representation/screens/register_screen.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
 import 'package:travo_app/representation/widgets/item_button_widget.dart';
@@ -38,8 +40,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     ApiAuth apiAuth = ApiAuth();
+
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
 
@@ -51,10 +54,14 @@ class _LoginScreenState extends State<LoginScreen> {
     final UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-    //But not this
-    print(googleAuth?.idToken);
+    String? idToken = await userCredential.user!.getIdToken();
 
-    //  apiAuth.verifyTokenGoogle(idToken);
+    apiAuth
+        .verifyTokenGoogle(idToken, context)
+        .then((_) => apiAuth.checkTokens());
+
+    Provider.of<AuthUserProvider>(context, listen: false).user =
+        userCredential.user;
 
     return userCredential;
   }
@@ -82,9 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontSize: 16,
                   ),
                 ),
-
                 const SizedBox(height: 25),
-
                 ItemTextField(
                     controller: emailController,
                     hintText: 'Email',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
+import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/models/tourguide_model.dart';
 
 class ItemChangeGuide extends StatefulWidget {
@@ -31,7 +32,7 @@ class _ItemChangeGuideState extends State<ItemChangeGuide> {
         child: ListTile(
           leading: CircleAvatar(
             backgroundImage: NetworkImage(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNUKbV4ZCrVOwTMkfnN10Mfhwp7BSiVb64BzDuE_lA9w&s'),
+                widget.tourguideModel?.user.image ?? AssetHelper.person),
           ),
           title: Text(
             widget.tourguideModel?.user.fullName ?? '',

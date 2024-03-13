@@ -26,8 +26,12 @@ class ItemTripWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double totalAmount = (selectedTour?.price ?? 0) * tripModel.totalCustomer;
 
-    String startDate = tripModel.startDate.getStartDate;
-    String endDate = tripModel.endDate.getEndDate;
+    String startDate = tripModel.startDate;
+    String endDate = tripModel.endDate;
+
+    String formattedStartDate = formatDateString(startDate);
+    String formattedEndDate = formatDateString(endDate);
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(kMediumPadding),
@@ -100,7 +104,7 @@ class ItemTripWidget extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '$startDate - $endDate',
+                  '$formattedStartDate - $formattedEndDate',
                   textAlign: TextAlign.end,
                 ),
               )

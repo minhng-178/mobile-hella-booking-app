@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:travo_app/api/api_auth.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/representation/widgets/app_bar_container.dart';
@@ -37,6 +39,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
         gender,
         _formKey,
         context);
+  }
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    ApiAuth apiAuth = ApiAuth();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    final UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    String? idToken = await userCredential.user!.getIdToken();
+
+    apiAuth
+        .verifyTokenGoogle(idToken, context)
+        .then((_) => apiAuth.checkTokens());
+
+    return userCredential;
   }
 
   @override
@@ -212,9 +237,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // google + apple sign in buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     // google button
-                    ItemSquareTitle(imagePath: AssetHelper.google),
+                    ItemSquareTitle(
+                      imagePath: AssetHelper.google,
+                      onTap: signInWithGoogle,
+                    ),
 
                     SizedBox(width: 25),
 

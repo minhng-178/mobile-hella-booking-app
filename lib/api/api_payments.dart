@@ -4,14 +4,18 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:travo_app/api/api_auth.dart';
+import 'package:travo_app/api/api_bookings.dart';
+import 'package:travo_app/models/booking_model.dart';
+import 'package:travo_app/models/payment_model.dart';
 import 'package:travo_app/core/constants/api_constants.dart';
-import 'package:travo_app/representation/screens/main_app.dart';
+import 'package:travo_app/representation/screens/booked_screen.dart';
 import 'package:travo_app/representation/screens/webview_payment_screen.dart';
 
 class ApiPayment {
   final Dio _dio = Dio();
   final ApiAuth _apiAuth = ApiAuth();
   final String _baseUrl = baseUrl;
+  final ApiBooking _apiBooking = ApiBooking();
 
   void navigateToWebView(BuildContext context, String paymentUrl) {
     Navigator.push(
@@ -20,6 +24,50 @@ class ApiPayment {
         builder: (context) => WebviewPaymentScreen(paymentUrl: paymentUrl),
       ),
     );
+  }
+
+  Future<List<PaymentModel>> getPaymentHistory() async {
+    try {
+      final response = await _dio.get(
+        '$_baseUrl/payments',
+        options: Options(
+          headers: {
+            "Content-type": "application/json",
+          },
+        ),
+      );
+
+      if (response.statusCode == 201) {
+        Map<String, dynamic> data = response.data;
+        List<dynamic> payments = data['data'];
+
+        List<BookingModel> bookings = await _apiBooking.getBookingByUserId();
+        List<PaymentModel> filteredPayments = [];
+
+        for (var payment in payments) {
+          for (var booking in bookings) {
+            if (payment['bookingId'] == booking.id) {
+              payment['bookingDate'] = booking.bookingDate;
+              payment['totalCustomer'] = booking.totalCustomer;
+              payment['startDate'] = booking.startDate;
+              payment['endDate'] = booking.endDate;
+              payment['tourName'] = booking.tourName;
+              payment['tourguideName'] = booking.tourguideName;
+
+              filteredPayments.add(PaymentModel.fromJson(payment));
+              break;
+            }
+          }
+        }
+
+        return filteredPayments;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      log('$e');
+      throw Exception('Failed to get payment history');
+    }
   }
 
   Future<String> createPayment(int bookingId, String? bankCode,
@@ -68,7 +116,7 @@ class ApiPayment {
     log('$response');
 
     if (response.statusCode == 200) {
-      Navigator.of(context).pushNamed(MainApp.routeName);
+      Navigator.of(context).pushNamed(BookedScreen.routeName);
     } else {
       throw Exception('Failed to load IPN');
     }

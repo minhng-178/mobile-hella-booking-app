@@ -24,6 +24,7 @@ class ApiTourguides {
         List<dynamic> tourguides = data['data'];
 
         return tourguides
+            .where((tourguide) => tourguide['userId']['status'] == true)
             .map((tourguide) => TourGuideModel.fromJson(tourguide))
             .toList();
       } else {

@@ -193,12 +193,21 @@ class ApiAuth {
     return userId;
   }
 
-  Future<void> verifyTokenGoogle(String? accessToken) async {
-    try {
-      log('$accessToken');
+  Future<int?> getUserRole() async {
+    String? userRoleStr = await storage.read(key: 'userRole');
+    int intUserRole = int.parse(userRoleStr!);
+    return intUserRole;
+  }
 
+  Future<void> verifyTokenGoogle(
+      String? accessToken, BuildContext context) async {
+    final userProvider = Provider.of<AuthUserProvider>(context, listen: false);
+    final navigator = Navigator.of(context);
+    final snackBar = ScaffoldMessenger.of(context);
+
+    try {
       Response response = await _dio.post(
-        'http://localhost:1411/api/v1/Firebase/verifyGoogle',
+        '$_baseUrl/Firebase/verifyGoogle',
         data: {'authToken': accessToken},
         options: Options(
           headers: {
@@ -207,7 +216,38 @@ class ApiAuth {
         ),
       );
 
-      log('$response');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        log('User logged in successfully');
+        NotificationService().showNotification(
+            title: 'Login Success!', body: 'Glad to see you again!');
+
+        // Store the tokens
+        var jsonResponse = response.data;
+        var accessToken = jsonResponse['token']['accessToken'];
+        var refreshToken = jsonResponse['token']['refreshToken'];
+        var userId = jsonResponse['_id'];
+        var userRole = jsonResponse['roleId'].toString();
+
+        await storage.write(key: 'accessToken', value: accessToken);
+        await storage.write(key: 'refreshToken', value: refreshToken);
+        await storage.write(key: 'userId', value: userId);
+        await storage.write(key: 'userRole', value: userRole);
+
+        userProvider.isLoggedIn = refreshToken != null;
+
+        navigator.pushReplacementNamed(MainApp.routeName);
+      } else {
+        log('Failed to log in user');
+        // Handle failed login...
+        var errorResponse = json.decode(response.data);
+        log('Server error: ${errorResponse['message']}');
+        snackBar.showSnackBar(
+          SnackBar(
+              content:
+                  Text('Failed to log in user: ${errorResponse['message']}'),
+              backgroundColor: Colors.red),
+        );
+      }
     } catch (e) {
       log('$e');
       throw Exception('Invalid Google Token!');

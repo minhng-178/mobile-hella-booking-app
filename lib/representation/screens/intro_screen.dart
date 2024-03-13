@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';

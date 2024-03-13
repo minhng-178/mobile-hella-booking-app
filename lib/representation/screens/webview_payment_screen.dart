@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travo_app/core/constants/dimension_constants.dart';
+import 'package:travo_app/representation/services/notifi_service.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:travo_app/representation/screens/payment_success.dart';
@@ -21,7 +22,6 @@ class _WebviewPaymentScreenState extends State<WebviewPaymentScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.paymentUrl);
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -30,6 +30,8 @@ class _WebviewPaymentScreenState extends State<WebviewPaymentScreen> {
             if (url.startsWith('https://booking-tour-zeta.vercel.app')) {
               var uri = Uri.parse(url);
               var queryString = uri.query;
+              NotificationService().showNotification(
+                  title: 'Payment Success!', body: 'Enjoy your trip. ❤️');
               Navigator.push(
                 context,
                 MaterialPageRoute(

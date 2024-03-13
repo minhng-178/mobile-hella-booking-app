@@ -37,7 +37,8 @@ mixin AssetHelper {
   static const String slide1 = 'assets/images/slide1.png';
   static const String slide2 = 'assets/images/slide2.png';
   static const String slide3 = 'assets/images/slide3.png';
-  static const String person = 'assets/images/person.png';
+  static const String person =
+      'https://cdn-icons-png.flaticon.com/512/6596/6596121.png';
   static const String hotel1 = 'assets/images/hotel1.png';
   static const String hotel2 = 'assets/images/hotel2.png';
   static const String hotel3 = 'assets/images/hotel3.png';

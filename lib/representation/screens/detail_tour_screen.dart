@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travo_app/api/api_auth.dart';
 
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
@@ -26,10 +27,25 @@ class DetailTourScreen extends StatefulWidget {
 }
 
 class _DetailTourScreenState extends State<DetailTourScreen> {
+  int? userRole;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserRole();
+  }
+
+  Future<void> getUserRole() async {
+    final ApiAuth apiAuth = ApiAuth();
+    userRole = await apiAuth.getUserRole();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<AuthUserProvider>(context);
     final isLoggedIn = userProvider.isLoggedIn;
+
     return Scaffold(
       body: Stack(
         alignment: Alignment.bottomCenter,
@@ -124,10 +140,13 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Text(
-                                      widget.tourModel.tourName,
-                                      style: TextStyles
-                                          .defaultStyle.fontHeader.bold,
+                                    Flexible(
+                                      child: Text(
+                                        widget.tourModel.tourName,
+                                        style: TextStyles
+                                            .defaultStyle.fontHeader.bold,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                     Spacer(),
                                     Text(
@@ -239,6 +258,18 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                           'error',
                                           'Error',
                                           'Please login to continue booking!',
+                                          context,
+                                        );
+                                        return;
+                                      }
+
+                                      if (userRole != 0) {
+                                        Provider.of<DialogProvider>(context,
+                                                listen: false)
+                                            .showDialog(
+                                          'error',
+                                          'Error',
+                                          'Permision denied! Your account is not normal user',
                                           context,
                                         );
                                         return;
