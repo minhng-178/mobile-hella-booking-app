@@ -9,11 +9,14 @@ class LocationInTourModel {
   final String endCity;
   final String locationName;
   final String locationAddress;
+  final String locationImage;
   final String tourName;
   final String tourType;
+  final String tourImage;
   final double price;
   final String vehicleName;
   final String vehicleCapacity;
+  final DateTime createAt;
 
   LocationInTourModel({
     required this.id,
@@ -26,11 +29,14 @@ class LocationInTourModel {
     required this.endCity,
     required this.locationName,
     required this.locationAddress,
+    required this.locationImage,
     required this.tourName,
+    required this.tourImage,
     required this.price,
     required this.tourType,
     required this.vehicleName,
     required this.vehicleCapacity,
+    required this.createAt,
   });
 
   factory LocationInTourModel.fromJson(Map<String, dynamic> json) {
@@ -45,16 +51,19 @@ class LocationInTourModel {
       endCity: json['endCity'],
       locationName: json['locationName'] ?? '',
       locationAddress: json['locationAddress'] ?? '',
+      locationImage: json['locationImage'].toString().trim(),
       tourName: json['tourName'] ?? '',
       tourType: json['tourType'] ?? '',
+      tourImage: json['tourImage'] ?? '',
       price: json['price']?.toDouble() ?? 0.0,
       vehicleName: json['vehicleName'] ?? '',
       vehicleCapacity: json['vehicleCapacity'] ?? '',
+      createAt: DateTime.parse(json['createAt']),
     );
   }
 
   @override
   String toString() {
-    return 'LocationInTourModel{id: $id, tourId: $tourId, locationId: $locationId, duration: $duration, description: $description, startCity: $startCity, endCity: $endCity, locationName: $locationName, locationAddress: $locationAddress, tourName: $tourName, tourType: $tourType, price: $price, vehicleName: $vehicleName}';
+    return 'LocationInTourModel{id: $id, tourId: $tourId, locationId: $locationId, duration: $duration, description: $description, startCity: $startCity, endCity: $endCity, locationName: $locationName, locationAddress: $locationAddress, tourName: $tourName, tourType: $tourType, price: $price, vehicleName: $vehicleName, tourImage: $tourImage, createAt: $createAt}';
   }
 }

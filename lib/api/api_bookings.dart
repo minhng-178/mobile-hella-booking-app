@@ -100,6 +100,7 @@ class ApiBooking {
               booking['endDate'] = trip.endDate;
               booking['tourName'] = trip.tourName;
               booking['tourguideName'] = trip.tourguideName;
+              booking['tourImage'] = trip.imageTour;
               break;
             }
           }

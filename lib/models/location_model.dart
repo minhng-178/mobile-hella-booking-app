@@ -4,7 +4,7 @@ class LocationModel {
   final String locationName;
   final String locationAddress;
   final bool status;
-  final String? image;
+  final String image;
 
   LocationModel({
     required this.id,
@@ -12,7 +12,7 @@ class LocationModel {
     required this.locationName,
     required this.locationAddress,
     required this.status,
-    this.image,
+    required this.image,
   });
 
   factory LocationModel.fromJson(Map<String, dynamic> json) {
@@ -22,12 +22,13 @@ class LocationModel {
       locationName: json['locationName'],
       locationAddress: json['locationAddress'],
       status: json['status'],
-      image: json['image'],
+      image: json['image']?.toString().trim() ??
+          'https://i.stack.imgur.com/HILmr.png',
     );
   }
 
   @override
   String toString() {
-    return 'LocationModel{id: $id, locationName: $locationName, locationAddress: $locationAddress}';
+    return 'LocationModel{id: $id, locationName: $locationName, locationAddress: $locationAddress, locationImage: $image}';
   }
 }

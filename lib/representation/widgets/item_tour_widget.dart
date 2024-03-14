@@ -14,6 +14,7 @@ class ItemTourWidget extends StatelessWidget {
 
   final LocationInTourModel tourModel;
   final Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,13 +26,17 @@ class ItemTourWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
+            height: 220,
             width: double.infinity,
             margin: EdgeInsets.only(right: kDefaultPadding),
-            child: ImageHelper.loadFromAsset(
-              AssetHelper.placeholder,
-              radius: BorderRadius.only(
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(kDefaultPadding),
                 bottomRight: Radius.circular(kDefaultPadding),
+              ),
+              child: Image.network(
+                tourModel.tourImage.trim(),
+                fit: BoxFit.cover,
               ),
             ),
           ),

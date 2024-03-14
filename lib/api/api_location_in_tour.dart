@@ -37,14 +37,16 @@ class ApiLocationsInTours {
             if (location.id == locationinTour['locationId']) {
               locationinTour['locationName'] = location.locationName;
               locationinTour['locationAddress'] = location.locationAddress;
+              locationinTour['locationImage'] = location.image;
               break;
             }
           }
           for (var tour in tours) {
             if (tour.id == locationinTour['tourId']) {
+              locationinTour['price'] = tour.price;
+              locationinTour['tourImage'] = tour.image;
               locationinTour['tourName'] = tour.tourName;
               locationinTour['tourType'] = tour.tourType;
-              locationinTour['price'] = tour.price;
               locationinTour['vehicleName'] = tour.vehicleName;
               locationinTour['vehicleCapacity'] = tour.vehicleCapacity;
               break;
@@ -54,7 +56,8 @@ class ApiLocationsInTours {
 
         return locationsinTours
             .map((tour) => LocationInTourModel.fromJson(tour))
-            .toList();
+            .toList()
+          ..sort((a, b) => b.createAt.compareTo(a.createAt));
       } else {
         return [];
       }

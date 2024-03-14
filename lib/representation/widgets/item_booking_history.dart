@@ -60,8 +60,10 @@ class ItemBookingHistory extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 3,
-                    child: ImageHelper.loadFromAsset(AssetHelper.placeholder,
-                        radius: BorderRadius.circular(kItemPadding)),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            kItemPadding), // Adjust the radius as needed
+                        child: Image.network(paymentModel.tourImage)),
                   ),
                 ],
               ),

@@ -8,7 +8,7 @@ class TripModel {
   final String tourGuideId;
   final String tourName;
   final String tourguideName;
-  final String imageUrl;
+  final String imageTour;
 
   TripModel({
     required this.id,
@@ -20,7 +20,7 @@ class TripModel {
     required this.tourGuideId,
     required this.tourName,
     required this.tourguideName,
-    required this.imageUrl,
+    required this.imageTour,
   });
 
   factory TripModel.fromJson(Map<String, dynamic> json) {
@@ -34,11 +34,11 @@ class TripModel {
         tourGuideId: json['tourGuideId'],
         tourName: json['tourName'] ?? '',
         tourguideName: json['tourguideName'] ?? '',
-        imageUrl: json['image'] ?? '');
+        imageTour: json['tourImage'] ?? '');
   }
 
   @override
   String toString() {
-    return 'Tripmodel: {id: $id, tourId: $tourId, totalCustomer: $totalCustomer, startDate: $startDate, endDate: $endDate, tourGuideId: $tourGuideId}, tourName: {$tourName}, tourGuideName: {$tourguideName}';
+    return 'Tripmodel: {id: $id, tourId: $tourId, totalCustomer: $totalCustomer, startDate: $startDate, endDate: $endDate, tourGuideId: $tourGuideId}, tourName: {$tourName}, tourGuideName: {$tourguideName}, tourImage: $imageTour';
   }
 }

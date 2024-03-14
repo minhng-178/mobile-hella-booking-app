@@ -18,21 +18,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> listImageLeft = [
     {
-      'name': 'Korea',
+      'name': 'Nha tho duc ba',
       'image': AssetHelper.korea,
     },
     {
-      'name': 'Dubai',
+      'name': 'Dinh doc lap',
       'image': AssetHelper.dubai,
     },
   ];
   final List<Map<String, String>> listImageRight = [
     {
-      'name': 'Turkey',
+      'name': 'Thao cam vien',
       'image': AssetHelper.turkey,
     },
     {
-      'name': 'Japan',
+      'name': 'Cho Ben Thanh',
       'image': AssetHelper.japan,
     },
   ];

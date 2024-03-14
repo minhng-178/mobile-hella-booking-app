@@ -8,7 +8,7 @@ import 'package:travo_app/api/api_bookings.dart';
 import 'package:travo_app/models/booking_model.dart';
 import 'package:travo_app/models/payment_model.dart';
 import 'package:travo_app/core/constants/api_constants.dart';
-import 'package:travo_app/representation/screens/booked_screen.dart';
+import 'package:travo_app/representation/screens/main_app.dart';
 import 'package:travo_app/representation/screens/webview_payment_screen.dart';
 
 class ApiPayment {
@@ -53,6 +53,7 @@ class ApiPayment {
               payment['endDate'] = booking.endDate;
               payment['tourName'] = booking.tourName;
               payment['tourguideName'] = booking.tourguideName;
+              payment['tourImage'] = booking.tourImage;
 
               filteredPayments.add(PaymentModel.fromJson(payment));
               break;
@@ -106,6 +107,8 @@ class ApiPayment {
   }
 
   Future<void> returnIpn(String queryParamsString, BuildContext context) async {
+    final navigator = Navigator.of(context);
+
     if (queryParamsString == '') {
       throw ArgumentError('The input must not be empty');
     }
@@ -116,7 +119,7 @@ class ApiPayment {
     log('$response');
 
     if (response.statusCode == 200) {
-      Navigator.of(context).pushNamed(BookedScreen.routeName);
+      navigator.pushNamed(MainApp.routeName);
     } else {
       throw Exception('Failed to load IPN');
     }

@@ -195,7 +195,12 @@ class ApiAuth {
 
   Future<int?> getUserRole() async {
     String? userRoleStr = await storage.read(key: 'userRole');
-    int intUserRole = int.parse(userRoleStr!);
+
+    if (userRoleStr == null) {
+      return null;
+    }
+
+    int intUserRole = int.parse(userRoleStr);
     return intUserRole;
   }
 

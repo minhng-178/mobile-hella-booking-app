@@ -242,7 +242,7 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
             ),
             ItemOptionsBookingWidget(
               title: 'Tour Guide',
-              value: selectedGuide?.user.fullName ?? 'Select a guide',
+              value: selectedGuide?.user.fullName ?? 'Select a tourguide',
               icon: AssetHelper.icoTourguide,
               onTap: () async {
                 final result = await showDialog<TourGuideModel>(

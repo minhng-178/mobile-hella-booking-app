@@ -76,8 +76,11 @@ class ItemTripWidget extends StatelessWidget {
               ),
               Expanded(
                 flex: 3,
-                child: ImageHelper.loadFromAsset(AssetHelper.placeholder,
-                    radius: BorderRadius.circular(kItemPadding)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(kMinPadding),
+                  child: Image.network(selectedTour?.image ??
+                      'https://icrier.org/wp-content/uploads/2022/09/Event-Image-Not-Found.jpg'),
+                ),
               ),
             ],
           ),

@@ -32,7 +32,8 @@ class UserModel {
         roleId: json['roleId'],
         phone: json['phone'],
         gender: json['gender'],
-        image: json['image'],
+        image: json['image']?.toString().trim() ??
+            'https://cdn-icons-png.flaticon.com/512/6596/6596121.png',
         verified: json['verified']);
   }
 

@@ -28,7 +28,7 @@ class _BookedScreenState extends State<BookedScreen> {
     final isLoggedIn = userProvider.isLoggedIn;
 
     return AppBarContainerWidget(
-      titleString: 'Booking History',
+      titleString: 'Payment History',
       implementTraling: true,
       child: isLoggedIn
           ? _buildPaymentHistory() // Show payment history if logged in

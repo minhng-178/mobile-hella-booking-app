@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/providers/auth_user_provider.dart';
-import 'package:travo_app/representation/screens/login_screen.dart';
+import 'package:travo_app/representation/screens/main_app.dart';
 import 'package:travo_app/representation/widgets/item_elevated_button.dart';
 
 class ItemDrawer extends StatelessWidget {
@@ -96,8 +97,7 @@ class ItemDrawer extends StatelessWidget {
                               await authProvider.signOut();
 
                               navigator.pop();
-                              navigator
-                                  .pushReplacementNamed(LoginScreen.routeName);
+                              navigator.pushReplacementNamed(MainApp.routeName);
                             },
                           ),
                         ],

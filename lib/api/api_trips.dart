@@ -69,6 +69,7 @@ class ApiTrips {
           for (var tour in tours) {
             if (trip['tourId'] == tour.id) {
               trip['tourName'] = tour.tourName;
+              trip['tourImage'] = tour.image;
               break;
             }
           }

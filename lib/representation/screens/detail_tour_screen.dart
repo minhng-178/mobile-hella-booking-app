@@ -27,7 +27,7 @@ class DetailTourScreen extends StatefulWidget {
 }
 
 class _DetailTourScreenState extends State<DetailTourScreen> {
-  int? userRole;
+  int? userRole = 0;
 
   @override
   void initState() {
@@ -51,8 +51,9 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
         alignment: Alignment.bottomCenter,
         children: [
           Positioned.fill(
-              child: ImageHelper.loadFromAsset(AssetHelper.placeholder,
-                  fit: BoxFit.fill)),
+            child: Image.network(widget.tourModel.tourImage.trim(),
+                fit: BoxFit.cover),
+          ),
           Positioned(
             top: kMediumPadding * 3,
             left: kMediumPadding,
@@ -241,8 +242,8 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                 SizedBox(
                                   height: kDefaultPadding,
                                 ),
-                                ImageHelper.loadFromAsset(
-                                  AssetHelper.imageMap,
+                                Image.network(
+                                  widget.tourModel.locationImage,
                                   width: double.infinity,
                                 ),
                                 SizedBox(

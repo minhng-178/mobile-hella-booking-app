@@ -11,6 +11,7 @@ class PaymentModel {
   final String endDate;
   final String tourName;
   final String tourguideName;
+  final String tourImage;
 
   PaymentModel(
       {required this.id,
@@ -24,7 +25,8 @@ class PaymentModel {
       required this.startDate,
       required this.endDate,
       required this.tourName,
-      required this.tourguideName});
+      required this.tourguideName,
+      required this.tourImage});
 
   factory PaymentModel.fromJson(Map<String, dynamic> json) {
     return PaymentModel(
@@ -39,11 +41,12 @@ class PaymentModel {
         startDate: json['startDate'] ?? 'Not Available',
         endDate: json['endDate'] ?? 'Not Available',
         tourName: json['tourName'] ?? '',
-        tourguideName: json['tourguideName'] ?? '');
+        tourguideName: json['tourguideName'] ?? '',
+        tourImage: json['tourImage'] ?? '');
   }
 
   @override
   String toString() {
-    return 'PaymentModel: {Booking date: $bookingDate, payment date: $paymentDate, tourName: $tourName, tourguideName: $tourguideName, totalCustomer: $totalCustomer, totalAmount: $amount}';
+    return 'PaymentModel: {Booking date: $bookingDate, payment date: $paymentDate, tourName: $tourName, tourguideName: $tourguideName, totalCustomer: $totalCustomer, totalAmount: $amount, tourImage: $tourImage}';
   }
 }

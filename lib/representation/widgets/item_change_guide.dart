@@ -31,9 +31,8 @@ class _ItemChangeGuideState extends State<ItemChangeGuide> {
             selected ? ColorPalette.selectedColor : ColorPalette.primaryColor,
         child: ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(
-                widget.tourguideModel?.user.image ?? AssetHelper.person),
-          ),
+              backgroundImage: NetworkImage(
+                  widget.tourguideModel?.user.image ?? AssetHelper.person)),
           title: Text(
             widget.tourguideModel?.user.fullName ?? '',
             style: TextStyle(color: ColorPalette.backgroundScaffoldColor),
