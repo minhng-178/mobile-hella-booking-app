@@ -5,6 +5,7 @@ import 'package:travo_app/models/trip_model.dart';
 import 'package:travo_app/representation/screens/booked_screen.dart';
 import 'package:travo_app/representation/screens/checkout_screen.dart';
 import 'package:travo_app/representation/screens/comming_soon_screen.dart';
+import 'package:travo_app/representation/screens/customer_care_screen.dart';
 import 'package:travo_app/representation/screens/detail_tour_screen.dart';
 import 'package:travo_app/representation/screens/intro_screen.dart';
 import 'package:travo_app/representation/screens/login_screen.dart';
@@ -25,6 +26,7 @@ final Map<String, WidgetBuilder> routes = {
   ToursScreen.routeName: (context) => const ToursScreen(),
   CommingsoonScreen.routeName: (context) => const CommingsoonScreen(),
   BookedScreen.routeName: (context) => const BookedScreen(),
+  CustomerCareScreen.routeName: (context) => CustomerCareScreen()
 };
 
 MaterialPageRoute<dynamic>? generateRoutes(RouteSettings settings) {

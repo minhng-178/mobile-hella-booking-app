@@ -29,6 +29,7 @@ class _BookedScreenState extends State<BookedScreen> {
 
     return AppBarContainerWidget(
       titleString: 'Payment History',
+      implementLeading: false,
       implementTraling: true,
       child: isLoggedIn
           ? _buildPaymentHistory() // Show payment history if logged in

@@ -83,6 +83,12 @@ class _TourBookingScreenState extends State<TourBookingScreen> {
               onTap: () {},
             ),
             ItemOptionsBookingWidget(
+              title: 'Location',
+              value: widget.tourModel.locationName,
+              icon: AssetHelper.icoLocations,
+              onTap: () {},
+            ),
+            ItemOptionsBookingWidget(
               title: 'Select Date',
               value: selectStartDate ?? 'Select date',
               icon: AssetHelper.icoCalendal,

@@ -7,6 +7,7 @@ import 'package:travo_app/representation/screens/booked_screen.dart';
 import 'package:travo_app/representation/screens/comming_soon_screen.dart';
 import 'package:travo_app/representation/screens/home_screen.dart';
 import 'package:travo_app/representation/screens/profile_screen.dart';
+import 'package:travo_app/representation/screens/tours_screen.dart';
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
@@ -19,6 +20,48 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialogBox(context);
+    });
+  }
+
+  void showDialogBox(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamed(ToursScreen.routeName);
+                },
+                child: Image.network(
+                  'https://res.cloudinary.com/ddf1wvwlc/image/upload/v1710592386/Green_White_Minimalist_Tour_Travel_Pinterest_Pin_wsdkmv.png',
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

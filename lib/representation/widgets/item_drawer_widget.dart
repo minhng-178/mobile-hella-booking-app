@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travo_app/core/constants/color_palette.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/providers/auth_user_provider.dart';
+import 'package:travo_app/representation/screens/customer_care_screen.dart';
 import 'package:travo_app/representation/screens/main_app.dart';
 import 'package:travo_app/representation/widgets/item_elevated_button.dart';
 
@@ -40,10 +41,9 @@ class ItemDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(FontAwesomeIcons.paperPlane),
-            title: Text('Sent'),
+            title: Text('Help'),
             onTap: () {
-              // Update the state of the app
-              // ...
+              Navigator.of(context).pushNamed(CustomerCareScreen.routeName);
             },
           ),
           ListTile(

@@ -55,15 +55,35 @@ class ItemBookingHistory extends StatelessWidget {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        if (paymentModel.status == true)
+                          Text(
+                            'Successfull',
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )
+                        else
+                          Text(
+                            'Failed',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          )
                       ],
                     ),
                   ),
                   Expanded(
                     flex: 3,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                            kItemPadding), // Adjust the radius as needed
-                        child: Image.network(paymentModel.tourImage)),
+                      borderRadius: BorderRadius.circular(
+                          kItemPadding), // Adjust the radius as needed
+                      child: Image.network(paymentModel.tourImage),
+                    ),
                   ),
                 ],
               ),

@@ -1,12 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travo_app/api/api_auth.dart';
+import 'package:travo_app/api/api_location_activites.dart';
 
 import 'package:travo_app/core/constants/dimension_constants.dart';
 import 'package:travo_app/core/constants/textstyle_constants.dart';
 import 'package:travo_app/core/helpers/asset_helper.dart';
 import 'package:travo_app/core/helpers/image_helper.dart';
+import 'package:travo_app/models/location_activity_model.dart';
 import 'package:travo_app/models/location_in_tour_model.dart';
 import 'package:travo_app/providers/auth_user_provider.dart';
 import 'package:travo_app/providers/dialog_provider.dart';
@@ -28,17 +32,32 @@ class DetailTourScreen extends StatefulWidget {
 
 class _DetailTourScreenState extends State<DetailTourScreen> {
   int? userRole = 0;
+  List<LocationActivityModel>? _activityModels;
 
   @override
   void initState() {
     super.initState();
     getUserRole();
+    getActivitiesByLocation();
   }
 
   Future<void> getUserRole() async {
     final ApiAuth apiAuth = ApiAuth();
     userRole = await apiAuth.getUserRole();
     setState(() {});
+  }
+
+  void getActivitiesByLocation() async {
+    final ApiLocationsActivites apiLocationsActivites = ApiLocationsActivites();
+    try {
+      final activityModels = await apiLocationsActivites
+          .getLocationActivityByLocationId(widget.tourModel.locationId);
+      setState(() {
+        _activityModels = activityModels;
+      });
+    } catch (e) {
+      log('$e');
+    }
   }
 
   @override
@@ -237,6 +256,41 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                                 ),
                                 SizedBox(
                                   height: kDefaultPadding,
+                                ),
+                                Text(
+                                  'Activity',
+                                  style: TextStyles.defaultStyle.text1Color,
+                                ),
+                                if (_activityModels == null)
+                                  CircularProgressIndicator()
+                                else
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: _activityModels?.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: ListTile(
+                                          contentPadding: EdgeInsets.zero,
+                                          title: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                child: Text(
+                                                    '• ${_activityModels![index].activityDuration} - ${_activityModels![index].activityName}'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                Text(
+                                  'Address',
+                                  style: TextStyles.defaultStyle.text1Color,
                                 ),
                                 Text(widget.tourModel.locationAddress),
                                 SizedBox(

@@ -55,6 +55,7 @@ class ApiLocationsInTours {
         }
 
         return locationsinTours
+            .where((tour) => tour['status'] == true)
             .map((tour) => LocationInTourModel.fromJson(tour))
             .toList()
           ..sort((a, b) => b.createAt.compareTo(a.createAt));
