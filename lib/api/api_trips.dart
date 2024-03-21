@@ -126,8 +126,6 @@ class ApiTrips {
       );
 
       if (response.statusCode == 200) {
-        log('Trip created successfully');
-
         Map<String, dynamic> data = response.data;
 
         TripModel createdTrip = TripModel.fromJson(data['data']);

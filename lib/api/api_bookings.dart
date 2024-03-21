@@ -23,8 +23,6 @@ class ApiBooking {
     String? userId = await _apiAuth.getUserIdFromLocal();
     String? bearer = await _apiAuth.getBearer();
 
-    log('$userId');
-
     var bookingData = {
       'bookingDate': bookingDate,
       'userId': userId,
@@ -46,8 +44,6 @@ class ApiBooking {
           },
         ),
       );
-
-      log('$response');
 
       if (response.statusCode == 201) {
         Map<String, dynamic> data = response.data;
